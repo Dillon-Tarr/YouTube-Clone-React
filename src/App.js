@@ -13,8 +13,14 @@ function App() {
   return (
     <div className="container-fluid">
       <div className="row">
-        <div className="col-12">
-          <input></input>
+        <div className="col-3 text-center titleName">
+          <p>UrTube</p>
+        </div>
+        <div className="col-6 text-center" id="title">
+          <input id="searchInput"></input>
+          <button>Search</button>
+        </div>
+        <div className="col-3">
         </div>
       </div>
       <div className="row">
