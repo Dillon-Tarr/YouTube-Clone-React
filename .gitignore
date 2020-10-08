@@ -126,3 +126,5 @@ config/api-key.json# See https://help.github.com/articles/ignoring-files/ for mo
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+config/api-key.json
