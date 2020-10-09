@@ -6,11 +6,11 @@ import $ from 'jquery';
 function App() {
   return (
     <div className="container-fluid">
-      <div className="row">
+      <div className="row" id="title-bar">
         <div className="col-3 text-center titleName">
           <p>UrTube</p>
         </div>
-        <div className="col-6 text-center" id="title">
+        <div className="col-6 d-flex justify-content-center" id="title">
           <input id="searchInput"></input>
           <button id="searchButton"><img src={require('./images/search-icon.png')} alt="magnifying glass" id="searchIcon"/></button>
         </div>
