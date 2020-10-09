@@ -15,14 +15,14 @@ export default class App extends Component {
     return (
       <div className="container-fluid">
       <div className="row" id="title-bar">
-        <div className="col-3 text-center titleName">
-          <p>UrTube</p>
+        <div className="col-lg-3 col-sm-12 text-center">
+          <p id="title"><img src={require('./images/ur-tube-favicon.png')} alt="UrTube icon" id="title-icon" className="img-fluid"/>{String.fromCharCode(160)}UrTube</p>
         </div>
-        <div className="col-6 d-flex justify-content-center" id="title">
+        <div className="col-lg-6 col-sm-12 d-flex justify-content-center" id="search">
           <input id="searchInput"></input>
           <button id="searchButton"><img src={require('./images/search-icon.png')} alt="magnifying glass" id="searchIcon"/></button>
         </div>
-        <div className="col-3">
+        <div className="col-lg-3">
         </div>
       </div>
       <div className="row">

@@ -1,6 +1,6 @@
 body{
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-  background-color: rgb(34, 34, 88);
+  background-color: rgb(14, 12, 36);
   color: rgb(209, 202, 202)
 }
 input{
@@ -16,18 +16,24 @@ iframe{
   width: 100%;
   height: 100%;
 }
-.titleName{
+#title{
+  display: flex;
+  flex-flow: row nowrap;
   padding: 5px;
+  align-items: center;
+  justify-content: left;
+  font-size: 2.2rem;
 }
 #searchInput{
   width: 75%;
   height: 35px;
   border: none;
 }
-#title{
+#search{
   height: 50px;
   padding: 7px 0px;
 }
+
 #playerDiv{
   
   position: relative;
