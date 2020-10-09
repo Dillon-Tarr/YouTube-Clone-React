@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import './App.css'
 import $ from 'jquery'
-//const config = require('config');
-//const apiKey = config.get('api-key');
+import apiKey from './default'
+
+
 
 export default class App extends Component {
 
