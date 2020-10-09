@@ -2,12 +2,6 @@ import React from 'react';
 import './App.css';
 import $ from 'jquery';
 
-function setHeight(){
-  var width = $( "iframe" ).width();
-  var height = (width * .5625);
-  $( "iframe" ).css("height", `${height}`);
-
-}
 
 function App() {
   return (
@@ -18,7 +12,7 @@ function App() {
         </div>
         <div className="col-6 text-center" id="title">
           <input id="searchInput"></input>
-          <button>Search</button>
+          <button><img src={require('./images/search-icon.png')} alt="magnifying glass" /></button>
         </div>
         <div className="col-3">
         </div>
@@ -26,7 +20,8 @@ function App() {
       <div className="row">
         <div className="col-lg-9 col-sm-12">
           <div  id="playerDiv">
-            <iframe id="ytplayer" type="text/html" 
+            <iframe id="ytplayer" type="text/html"
+              title="ytplayer" 
               src="https://www.youtube.com/embed/axCcDUbeC2Y?autoplay=1&origin=http://example.com"
               frameborder="0" > 
             </iframe>
