@@ -1,11 +1,19 @@
-import React from 'react';
-import './App.css';
-import $ from 'jquery';
+import React, { Component } from 'react'
+import './App.css'
+import $ from 'jquery'
 
+export default class App extends Component {
 
-function App() {
-  return (
-    <div className="container-fluid">
+  constructor(props) {
+    super(props)
+    this.state = {
+
+    }
+  }
+
+  render() {
+    return (
+      <div className="container-fluid">
       <div className="row" id="title-bar">
         <div className="col-3 text-center titleName">
           <p>UrTube</p>
@@ -66,7 +74,7 @@ function App() {
         </div>
       </div>
     </div>
-  );
+    )
+  }
 }
 
-export default App;
