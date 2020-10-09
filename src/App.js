@@ -1,26 +1,52 @@
 import React, { Component } from 'react'
+import axios from 'axios'
 import './App.css'
 import $ from 'jquery'
+//const config = require('config');
+//const apiKey = config.get('api-key');
 
 export default class App extends Component {
 
   constructor(props) {
     super(props)
     this.state = {
-
+      searchResults:{},
+      loading: false, 
+      searchText: 'banana'
     }
+    this.handleSearchChange = this.handleSearchChange.bind(this);
+    this.searchYouTube = this.searchYouTube.bind(this);
+  }
+
+  searchYouTube() {
+    axios.get(`https://www.googleapis.com/youtube/v3/search?q=${this.state.searchText}&key=${apiKey}&part=snippet&type=video`)
+    .then(res =>{
+      this.setState({ 
+      searchResults: res.data,
+    });
+      console.log(this.state.searchResults);
+    });
+    
+    
+  }
+
+  handleSearchChange(event){
+    console.log(event.target.value);
+    this.setState({
+      searchText: event.target.value,
+    });
   }
 
   render() {
-    return (
+    return (this.state.loading ? <div><span> Loading... </span></div> : (
       <div className="container-fluid">
       <div className="row" id="title-bar">
         <div className="col-lg-3 col-sm-12 text-center">
           <p id="title"><img src={require('./images/ur-tube-favicon.png')} alt="UrTube icon" id="title-icon" className="img-fluid"/>{String.fromCharCode(160)}UrTube</p>
         </div>
         <div className="col-lg-6 col-sm-12 d-flex justify-content-center" id="search">
-          <input id="searchInput"></input>
-          <button id="searchButton"><img src={require('./images/search-icon.png')} alt="magnifying glass" id="searchIcon"/></button>
+          <input id="searchInput" onChange={this.handleSearchChange}></input>
+          <button id="searchButton" onClick={this.searchYouTube}><img src={require('./images/search-icon.png')} alt="magnifying glass" id="searchIcon"/></button>
         </div>
         <div className="col-lg-3">
         </div>
@@ -31,7 +57,7 @@ export default class App extends Component {
             <iframe id="ytplayer" type="text/html"
               title="ytplayer" 
               src="https://www.youtube.com/embed/axCcDUbeC2Y?autoplay=1&origin=http://example.com"
-              frameborder="0" > 
+              frameBorder="0" > 
             </iframe>
           </div>
           <div className="row">
@@ -74,7 +100,7 @@ export default class App extends Component {
         </div>
       </div>
     </div>
-    )
+    ))
   }
 }
 
