@@ -4,8 +4,6 @@ import './App.css'
 import $ from 'jquery'
 import apiKey from './default'
 
-
-
 export default class App extends Component {
 
   constructor(props) {
@@ -13,7 +11,8 @@ export default class App extends Component {
     this.state = {
       searchResults:{},
       loading: false, 
-      searchText: 'banana'
+      searchText: 'banana',
+      videoId: 'xYmuum_wgvc',
     }
     this.handleSearchChange = this.handleSearchChange.bind(this);
     this.searchYouTube = this.searchYouTube.bind(this);
@@ -24,8 +23,13 @@ export default class App extends Component {
     .then(res =>{
       this.setState({ 
       searchResults: res.data,
+      videoId: res.data.items[0].id.videoId,
     });
-      console.log(this.state.searchResults);
+    // this.setState({
+    //   videoId: this.state.searchResults.items[0].id.videoId
+    // });
+      console.log(this.state.searchResults.items[0].id.videoId)
+      $('#ytplayer').attr("src", `https://www.youtube.com/embed/${this.state.videoId}?autoplay=1&origin=http://example.com`)
     });
     
     
@@ -57,13 +61,13 @@ export default class App extends Component {
           <div  id="playerDiv">
             <iframe id="ytplayer" type="text/html"
               title="ytplayer" 
-              src="https://www.youtube.com/embed/axCcDUbeC2Y?autoplay=1&origin=http://example.com"
+              src="https://www.youtube.com/embed/xYmuum_wgvc?autoplay=1&origin=http://example.com"
               frameBorder="0" > 
             </iframe>
           </div>
           <div className="row">
             <div className="col-8">
-              <h1>Title</h1>
+              <h1>Title</h1> <p>{this.state.videoId}</p>
             </div>
             <div className="col-2">
               <h3>Likes</h3>
