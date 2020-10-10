@@ -13,6 +13,7 @@ export default class App extends Component {
       loading: false, 
       searchText: 'banana',
       videoId: 'xYmuum_wgvc',
+      videoTitle: 'devCodeCamp Info Session'
     }
     this.handleSearchChange = this.handleSearchChange.bind(this);
     this.searchYouTube = this.searchYouTube.bind(this);
@@ -24,11 +25,12 @@ export default class App extends Component {
       this.setState({ 
       searchResults: res.data,
       videoId: res.data.items[0].id.videoId,
+      videoTitle: res.data.items[0].snippet.title
     });
     // this.setState({
     //   videoId: this.state.searchResults.items[0].id.videoId
     // });
-      console.log(this.state.searchResults.items[0].id.videoId)
+      console.log(this.state.searchResults.items[0].snippet.title)
       $('#ytplayer').attr("src", `https://www.youtube.com/embed/${this.state.videoId}?autoplay=1&origin=http://example.com`)
     });
     
@@ -67,7 +69,7 @@ export default class App extends Component {
           </div>
           <div className="row">
             <div className="col-8">
-              <h1>Title</h1> <p>{this.state.videoId}</p>
+              <h2>{this.state.videoTitle}</h2>
             </div>
             <div className="col-2">
               <h3>Likes</h3>
