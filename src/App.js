@@ -3,6 +3,7 @@ import axios from 'axios'
 import './App.css'
 import $ from 'jquery'
 import apiKey from './default'
+import RelatedVideos from './components/RelatedVideos'
 
 export default class App extends Component {
 
@@ -10,6 +11,7 @@ export default class App extends Component {
     super(props)
     this.state = {
       searchResults:{},
+      relatedVideos:{},
       loading: false, 
       searchText: 'banana',
       videoId: 'xYmuum_wgvc',
@@ -17,6 +19,17 @@ export default class App extends Component {
     }
     this.handleSearchChange = this.handleSearchChange.bind(this);
     this.searchYouTube = this.searchYouTube.bind(this);
+  }
+
+  componentDidMount() {
+    axios.get(`https://www.googleapis.com/youtube/v3/search?key=${apiKey}&relatedToVideoId=${this.state.videoId}&part=snippet&type=video`)
+    .then(res =>{
+      this.setState({ 
+      relatedVideos: res.data
+    });
+      console.log(this.state.relatedVideos);
+      console.log(this.state.relatedVideos.items[0].snippet.thumbnails.default.url);
+    }); 
   }
 
   searchYouTube() {
@@ -27,14 +40,21 @@ export default class App extends Component {
       videoId: res.data.items[0].id.videoId,
       videoTitle: res.data.items[0].snippet.title
     });
-    // this.setState({
-    //   videoId: this.state.searchResults.items[0].id.videoId
-    // });
-      console.log(this.state.searchResults.items[0].snippet.title)
-      $('#ytplayer').attr("src", `https://www.youtube.com/embed/${this.state.videoId}?autoplay=1&origin=http://example.com`)
+      console.log(this.state.searchResults.items[0].id);
+      $('#ytplayer').attr("src", `https://www.youtube.com/embed/${this.state.videoId}?autoplay=1&origin=http://example.com`);
+      this.searchRelated();
     });
-    
-    
+  }
+
+  searchRelated(){
+    axios.get(`https://www.googleapis.com/youtube/v3/search?key=${apiKey}&relatedToVideoId=${this.state.videoId}&part=snippet&type=video`)
+    .then(res =>{
+      this.setState({ 
+      relatedVideos: res.data
+    });
+      console.log(this.state.relatedVideos);
+      console.log(this.state.relatedVideos.items[0].snippet.thumbnails.default.url);
+    });  
   }
 
   handleSearchChange(event){
@@ -103,7 +123,9 @@ export default class App extends Component {
           </div>
         </div>
         <div className="col-lg-3 col-sm-12" id="relatedVideos">
-          <p>Related Videos</p>
+          <RelatedVideos
+          data={this.state.relatedVideos}
+          />
         </div>
       </div>
     </div>
