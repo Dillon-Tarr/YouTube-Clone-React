@@ -3,7 +3,8 @@ import axios from 'axios'
 import './App.css'
 import $ from 'jquery'
 import apiKey from './default'
-import RelatedVideos from './components/RelatedVideos'
+import RelatedVideos from './components/RelatedVideos/RelatedVideos'
+import Header from './components/Header/Header'
 
 export default class App extends Component {
 
@@ -18,9 +19,8 @@ export default class App extends Component {
       videoTitle: 'devCodeCamp Info Session'
     }
     this.handleSearchChange = this.handleSearchChange.bind(this);
-    this.searchYouTube = this.searchYouTube.bind(this);
   }
-
+  
   componentDidMount() {
     axios.get(`https://www.googleapis.com/youtube/v3/search?key=${apiKey}&relatedToVideoId=${this.state.videoId}&part=snippet&type=video`)
     .then(res =>{
@@ -32,52 +32,10 @@ export default class App extends Component {
     }); 
   }
 
-  searchYouTube() {
-    axios.get(`https://www.googleapis.com/youtube/v3/search?q=${this.state.searchText}&key=${apiKey}&part=snippet&type=video`)
-    .then(res =>{
-      this.setState({ 
-      searchResults: res.data,
-      videoId: res.data.items[0].id.videoId,
-      videoTitle: res.data.items[0].snippet.title
-    });
-      console.log(this.state.searchResults.items[0].id);
-      $('#ytplayer').attr("src", `https://www.youtube.com/embed/${this.state.videoId}?autoplay=1&origin=http://example.com`);
-      this.searchRelated();
-    });
-  }
-
-  searchRelated(){
-    axios.get(`https://www.googleapis.com/youtube/v3/search?key=${apiKey}&relatedToVideoId=${this.state.videoId}&part=snippet&type=video`)
-    .then(res =>{
-      this.setState({ 
-      relatedVideos: res.data
-    });
-      console.log(this.state.relatedVideos);
-      console.log(this.state.relatedVideos.items[0].snippet.thumbnails.default.url);
-    });  
-  }
-
-  handleSearchChange(event){
-    console.log(event.target.value);
-    this.setState({
-      searchText: event.target.value,
-    });
-  }
-
   render() {
     return (this.state.loading ? <div><span> Loading... </span></div> : (
       <div className="container-fluid">
-      <div className="row" id="title-bar">
-        <div className="col-lg-3 col-sm-12 text-center">
-          <p id="title"><img src={require('./images/ur-tube-favicon.png')} alt="UrTube icon" id="title-icon" className="img-fluid"/>{String.fromCharCode(160)}UrTube</p>
-        </div>
-        <div className="col-lg-6 col-sm-12 d-flex justify-content-center" id="search">
-          <input id="searchInput" onChange={this.handleSearchChange}></input>
-          <button id="searchButton" onClick={this.searchYouTube}><img src={require('./images/search-icon.png')} alt="magnifying glass" id="searchIcon"/></button>
-        </div>
-        <div className="col-lg-3">
-        </div>
-      </div>
+        <Header  searchYouTube={this.searchYouTube}/>
       <div className="row">
         <div className="col-lg-9 col-sm-12">
           <div  id="playerDiv">
@@ -131,5 +89,37 @@ export default class App extends Component {
     </div>
     ))
   }
-}
 
+  searchYouTube = (searchText) => {
+    axios.get(`https://www.googleapis.com/youtube/v3/search?q=${searchText}&key=${apiKey}&part=snippet&type=video`)
+    .then(res =>{
+      this.setState({ 
+      searchResults: res.data,
+      videoId: res.data.items[0].id.videoId,
+      videoTitle: res.data.items[0].snippet.title
+    });
+      console.log(this.state.searchResults.items[0].id);
+      $('#ytplayer').attr("src", `https://www.youtube.com/embed/${this.state.videoId}?autoplay=1&origin=http://example.com`);
+      this.searchRelated();
+    });
+  }
+
+  searchRelated(){
+    axios.get(`https://www.googleapis.com/youtube/v3/search?key=${apiKey}&relatedToVideoId=${this.state.videoId}&part=snippet&type=video`)
+    .then(res =>{
+      this.setState({ 
+      relatedVideos: res.data
+    });
+      console.log(this.state.relatedVideos);
+      console.log(this.state.relatedVideos.items[0].snippet.thumbnails.default.url);
+    });  
+  }
+
+  handleSearchChange(event){
+    console.log(event.target.value);
+    this.setState({
+      searchText: event.target.value,
+    });
+  }
+
+}
