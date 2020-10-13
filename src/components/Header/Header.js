@@ -18,7 +18,7 @@ export default class Header extends Component {
       <>
       <div className="row" id="title-bar">
         <div className="col-lg-3 col-sm-12 text-center">
-          <p id="title"><img src={require('../../images/ur-tube-favicon.png')} alt="UrTube icon" id="title-icon" className="img-fluid"/>{String.fromCharCode(160)}UrTube</p>
+          <h1 id="title"><img src={require('../../images/ur-tube-favicon.png')} alt="UrTube icon" id="title-icon" className="img-fluid"/>{String.fromCharCode(160)}UrTube</h1>
         </div>
         <div className="col-lg-6 col-sm-12 d-flex justify-content-center" id="search">
           <input id="searchInput" type="text" placeholder="Search" onChange={this.handleSearchChange}></input>

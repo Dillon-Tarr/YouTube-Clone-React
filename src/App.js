@@ -7,7 +7,6 @@ import RelatedVideos from './components/RelatedVideos/RelatedVideos'
 import Header from './components/Header/Header'
 
 export default class App extends Component {
-
   constructor(props) {
     super(props)
     this.state = {
@@ -18,7 +17,8 @@ export default class App extends Component {
       videoId: 'xYmuum_wgvc',
       videoTitle: 'devCodeCamp Info Session'
     }
-    this.handleSearchChange = this.handleSearchChange.bind(this);
+
+    this.switchToRelatedVideo = this.switchToRelatedVideo.bind(this);
   }
   
   componentDidMount() {
@@ -34,7 +34,7 @@ export default class App extends Component {
   }
 
   render() {
-    return (this.state.loading ? <div><span> Loading... </span></div> : (
+    return (this.state.loading ? <h1 id="loading">Loading...</h1> : (
       <div className="container-fluid">
         <Header  searchYouTube={this.searchYouTube}/>
       <div className="row">
@@ -84,6 +84,7 @@ export default class App extends Component {
         <div className="col-lg-3 col-sm-12" id="related-videos">
           <RelatedVideos
           data={this.state.relatedVideos}
+          switchToRelatedVideo={this.switchToRelatedVideo}
           />
         </div>
       </div>
@@ -93,7 +94,7 @@ export default class App extends Component {
 
   searchYouTube = (searchText) => {
     axios.get(`https://www.googleapis.com/youtube/v3/search?q=${searchText}&key=${apiKey}&part=snippet&type=video`)
-    .then(res =>{
+    .then(res => {
       this.setState({ 
       searchResults: res.data,
       videoId: res.data.items[0].id.videoId,
@@ -110,23 +111,23 @@ export default class App extends Component {
     });
   }
 
-  searchRelated(){
+  searchRelated = () => {
     $( '#searchInput' ).attr("placeholder", `Search`);
     axios.get(`https://www.googleapis.com/youtube/v3/search?key=${apiKey}&relatedToVideoId=${this.state.videoId}&part=snippet&type=video`)
-    .then(res =>{
-      this.setState({ 
+    .then(res => {
+      this.setState({
       relatedVideos: res.data
     });
-      console.log(this.state.relatedVideos);
-      console.log(this.state.relatedVideos.items[0].snippet.thumbnails.default.url);
     });  
   }
 
-  handleSearchChange(event){
-    console.log(event.target.value);
+  switchToRelatedVideo = (videoId, title) => {
     this.setState({
-      searchText: event.target.value,
+    videoId: videoId,
+    videoTitle: title
     });
+    $('#ytplayer').attr("src", `https://www.youtube.com/embed/${videoId}?autoplay=1&origin=http://example.com`);
+    this.searchRelated();
   }
 
 }
