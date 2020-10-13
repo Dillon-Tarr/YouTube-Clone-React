@@ -13,7 +13,7 @@ export default class App extends Component {
     this.state = {
       searchResults:{},
       relatedVideos:{},
-      loading: false, 
+      loading: true, 
       searchText: 'banana',
       videoId: 'xYmuum_wgvc',
       videoTitle: 'devCodeCamp Info Session'
@@ -24,8 +24,9 @@ export default class App extends Component {
   componentDidMount() {
     axios.get(`https://www.googleapis.com/youtube/v3/search?key=${apiKey}&relatedToVideoId=${this.state.videoId}&part=snippet&type=video`)
     .then(res =>{
-      this.setState({ 
-      relatedVideos: res.data
+      this.setState({
+      relatedVideos: res.data,
+      loading: false
     });
       console.log(this.state.relatedVideos);
       console.log(this.state.relatedVideos.items[0].snippet.thumbnails.default.url);
@@ -80,7 +81,7 @@ export default class App extends Component {
             </div>
           </div>
         </div>
-        <div className="col-lg-3 col-sm-12" id="relatedVideos">
+        <div className="col-lg-3 col-sm-12" id="related-videos">
           <RelatedVideos
           data={this.state.relatedVideos}
           />

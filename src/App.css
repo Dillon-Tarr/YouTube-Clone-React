@@ -16,6 +16,16 @@ iframe{
   width: 100%;
   height: 100%;
 }
+
+.related-video {
+  width: 90%;
+}
+.related-video p {
+  text-align: left;
+  padding: 5px 5px 0px;
+  margin-bottom: 12px;
+}
+
 #title{
   display: flex;
   flex-flow: row nowrap;
@@ -58,5 +68,10 @@ iframe{
   margin-top: 10px;
 }
 #title-bar{
+  align-items: center;
+}
+#related-videos{
+  display: flex;
+  flex-flow: column nowrap;
   align-items: center;
 }
