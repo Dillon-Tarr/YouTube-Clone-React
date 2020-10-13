@@ -101,10 +101,16 @@ export default class App extends Component {
       console.log(this.state.searchResults.items[0].id);
       $('#ytplayer').attr("src", `https://www.youtube.com/embed/${this.state.videoId}?autoplay=1&origin=http://example.com`);
       this.searchRelated();
+    })
+    .catch((err) => {
+      $( '#searchInput' ).val("");
+      $( '#searchInput' ).attr("placeholder", `No results for "${searchText}"; please try again`);
+      console.log(err);
     });
   }
 
   searchRelated(){
+    $( '#searchInput' ).attr("placeholder", `Search`);
     axios.get(`https://www.googleapis.com/youtube/v3/search?key=${apiKey}&relatedToVideoId=${this.state.videoId}&part=snippet&type=video`)
     .then(res =>{
       this.setState({ 

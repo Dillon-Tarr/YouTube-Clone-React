@@ -1,7 +1,7 @@
 import React from 'react'
 
-function RelatedVideos(props){
-    var videoCol = props.data.item;
+export default function RelatedVideos(props){
+    var videoColumn = props.data.item;
 
     // for(let i = 0; i < 4; i++){
     //     var video = props.data.items[0].snippet.thumbnails.default.url;
@@ -10,8 +10,6 @@ function RelatedVideos(props){
     //             <img src="video"></img>
     //         </div>
     //   )}
-    return (<div className="row">{videoCol}</div>)
+    return (<div className="row">{videoColumn}</div>)
   
 }
-
-export default RelatedVideos;
