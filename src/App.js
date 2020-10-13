@@ -5,6 +5,7 @@ import $ from 'jquery'
 import apiKey from './default'
 import RelatedVideos from './components/RelatedVideos/RelatedVideos'
 import Header from './components/Header/Header'
+import CurrentVideo from './components/CurrentVideo/CurrentVideo'
 
 export default class App extends Component {
   constructor(props) {
@@ -15,7 +16,9 @@ export default class App extends Component {
       loading: true, 
       searchText: 'banana',
       videoId: 'xYmuum_wgvc',
-      videoTitle: 'devCodeCamp Info Session'
+      videoTitle: 'devCodeCamp Info Session',
+      numberOfLikes: 0,
+      numberOfDislikes: 0
     }
 
     this.switchToRelatedVideo = this.switchToRelatedVideo.bind(this);
@@ -28,7 +31,7 @@ export default class App extends Component {
       relatedVideos: res.data,
       loading: false
     });
-      console.log(this.state.relatedVideos);
+      console.log(this.state.videoTitle);
       console.log(this.state.relatedVideos.items[0].snippet.thumbnails.default.url);
     }); 
   }
@@ -39,47 +42,9 @@ export default class App extends Component {
         <Header  searchYouTube={this.searchYouTube}/>
       <div className="row">
         <div className="col-lg-9 col-sm-12">
-          <div  id="playerDiv">
-            <iframe id="ytplayer" type="text/html"
-              title="ytplayer" 
-              src="https://www.youtube.com/embed/xYmuum_wgvc?autoplay=1&origin=http://example.com"
-              frameBorder="0" > 
-            </iframe>
-          </div>
-          <div className="row">
-            <div className="col-8">
-              <h2>{this.state.videoTitle}</h2>
-            </div>
-            <div className="col-2">
-              <h3>Likes</h3>
-            </div>
-            <div className="col-2">
-              <h3>Dislikes</h3>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-8">
-              <h4>number of comments</h4>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-8">
-              <input></input>
-            </div>
-            <div className="col-2">
-              <button>Cancel</button>
-            </div>
-            <div className="col-2">
-              <button>Comment</button>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-12">
-              <div id="commentsReplies">
-                <p>Comments and Replies</p>
-              </div>
-            </div>
-          </div>
+          <CurrentVideo
+          data={this.state}
+          />
         </div>
         <div className="col-lg-3 col-sm-12" id="related-videos">
           <RelatedVideos
