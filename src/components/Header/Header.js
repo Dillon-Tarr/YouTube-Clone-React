@@ -22,7 +22,7 @@ export default class Header extends Component {
         </div>
         <div className="col-lg-6 col-sm-12 d-flex justify-content-center" id="search">
           <input id="searchInput" type="text" placeholder="Search" onChange={this.handleSearchChange}></input>
-          <button id="searchButton" onClick={() => {this.props.searchYouTube(this.state.searchText)}}><img src={require('../../images/search-icon.png')} alt="magnifying glass" id="searchIcon"/></button>
+          <button onClick={() => {this.props.searchYouTube(this.state.searchText)}}><img src={require('../../images/search-icon.png')} alt="magnifying glass" id="searchIcon"/></button>
         </div>
         <div className="col-lg-3">
         </div>
