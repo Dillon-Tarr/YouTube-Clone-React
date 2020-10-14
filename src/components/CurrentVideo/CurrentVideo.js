@@ -12,17 +12,21 @@ export default function CurrentVideo(props){
             </iframe>
           </div>
           <div className="row meta-data">
-            <div className="col-8">
+            <div className="col-md-8 col-12">
               <h2>{props.data.title}</h2>
-              <p id="description">Description:<br/><br/>{props.data.description}</p>
             </div>
-            <div className="col-2 d-flex justify-content-center">
+            <div className="col-md-2 col-6 d-flex justify-content-center">
                 <img src={require('../../images/thumbs.png')} alt="Thumbs Up" id="thumb-up" className="img-fluid thumb"/>
                 <p className="likes-dislikes">{props.data.numberOfLikes}</p>
             </div>
-            <div className="col-2 d-flex justify-content-center">
+            <div className="col-md-2 col-6 d-flex justify-content-center">
                 <img src={require('../../images/thumbs.png')} alt="Thumbs Down" id="thumb-down" className="img-fluid thumb"/>
                 <p className="likes-dislikes">{props.data.numberOfDislikes}</p>
+            </div>
+          </div>
+          <div className="row meta-data">
+            <div className="col-12">
+              <p id="description">Description:<br/><br/>{props.data.description}</p>
             </div>
           </div>
           <div className="row meta-data">
