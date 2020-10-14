@@ -21,8 +21,18 @@ export default class Header extends Component {
           <h1 id="title"><img src={require('../../images/ur-tube-favicon.png')} alt="UrTube icon" id="title-icon" className="img-fluid"/>{String.fromCharCode(160)}UrTube</h1>
         </div>
         <div className="col-lg-6 col-sm-12 d-flex justify-content-center" id="search">
-          <input id="searchInput" type="text" placeholder="Search" onChange={this.handleSearchChange}></input>
-          <button onClick={() => {this.props.searchYouTube(this.state.searchText)}}><img src={require('../../images/search-icon.png')} alt="magnifying glass" id="searchIcon"/></button>
+          <input id="searchInput" type="text" placeholder="Search" 
+            onChange={this.handleSearchChange}
+            onKeyPress={event => {
+              if (event.key === 'Enter'){
+                {this.props.searchYouTube(this.state.searchText)}
+              }
+            }}>
+            </input>
+          <button 
+            onClick={() => {this.props.searchYouTube(this.state.searchText)}} >
+              <img src={require('../../images/search-icon.png')} alt="magnifying glass" id="searchIcon"/>
+          </button>
         </div>
         <div className="col-lg-3">
         </div>
