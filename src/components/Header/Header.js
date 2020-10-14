@@ -25,7 +25,7 @@ export default class Header extends Component {
             onChange={this.handleSearchChange}
             onKeyPress={event => {
               if (event.key === 'Enter'){
-                {this.props.searchYouTube(this.state.searchText)}
+                this.props.searchYouTube(this.state.searchText)
               }
             }}>
             </input>
