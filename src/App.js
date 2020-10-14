@@ -130,6 +130,17 @@ export default class App extends Component {
     );
     $('#ytplayer').attr("src", `https://www.youtube.com/embed/${videoId}?autoplay=1&origin=http://example.com`);
   }
-  
+
+  increaseDecreaseLike(id){
+    if(id === 'up'){
+      this.state.numberOfLikes = (this.state.numberOfLikes + 1);
+    }else{
+      this.state.numberOfDislikes = (this.state.numberOfDislikes + 1);
+    }
+  }
+
+  changeNumberOfLikesDislikes = () => {
+    axios.put()
+  }
 
 }
