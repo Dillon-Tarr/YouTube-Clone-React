@@ -59,9 +59,6 @@ button {
   padding-top: 56.25%;
 }
 #searchIcon{
-  height: 25px;
-}
-#searchIcon{
   margin: 0px;
   height: 35px;
   background-color: rgb(255,255,255);
@@ -82,5 +79,46 @@ button {
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
-  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.thumb{
+  position: relative;
+  width: 25px;
+  height: 25px;
+  margin-top: 10px;
+}
+#thumb-down{
+  -webkit-transform:rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+#commentInput{
+  background-color: lightgray;
+  color: black;
+  width: 75%;
+  height: 35px;
+  border: none;
+}
+.likes-dislikes{
+  position: relative;
+  display: inline;
+  margin-top: 10px;
+  font-size: larger;
+}
+.commentButton{
+  border: none;
+  color: lightgray;
+  padding: 10px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  opacity: .5;
+}
+#comment{
+  background-color: lightgray;
+  color: rgb(14, 12, 36);
 }
