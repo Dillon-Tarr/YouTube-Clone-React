@@ -15,6 +15,7 @@ export default function CurrentVideo(props){
           <div className="row">
             <div className="col-8">
               <h2>{props.data.videoTitle}</h2>
+              <p id="description">{props.data.videoDescription}</p>
             </div>
             <div className="col-2 d-flex justify-content-center">
                 <img src={require('../../images/thumbs.png')} alt="Thumbs Up" id="thumb-up" className="img-fluid thumb"/>

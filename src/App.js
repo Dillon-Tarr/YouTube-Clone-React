@@ -17,6 +17,9 @@ export default class App extends Component {
       searchText: 'banana',
       videoId: 'xYmuum_wgvc',
       videoTitle: 'devCodeCamp Info Session',
+      videoDescription: `Learn to code!
+
+      For years, devCodeCamp has changed the lives of hundreds of students by training people with zero coding experience and giving them the skills to get a new job on a better career path in the tech industry. Our graduates get hired by the top companies in the state of Wisconsin and beyond, and these companies continue to come back and hire more.`,
       numberOfLikes: 0,
       numberOfDislikes: 0
     }
@@ -65,7 +68,8 @@ export default class App extends Component {
       video.snippet.title = convertCommonHtmlEntities(video.snippet.title);
       this.setState({ 
       videoId: video.id.videoId,
-      videoTitle: video.snippet.title
+      videoTitle: video.snippet.title,
+      videoDescription: video.snippet.description
     });
       if(res.data.items[0].snippet.title.includes(';')){
             let revisedTitle = res.data.items[0].snippet.title.split('&').shift();
@@ -91,15 +95,16 @@ export default class App extends Component {
         relatedVideos.items[i].snippet.title = convertCommonHtmlEntities(relatedVideos.items[i].snippet.title);
       }
       this.setState({
-      relatedVideos: relatedVideos
+      relatedVideos: relatedVideos,
     });
     });  
   }
 
-  switchToRelatedVideo = (videoId, title) => {
+  switchToRelatedVideo = (videoId, title, description) => {
     this.setState({
     videoId: videoId,
-    videoTitle: title
+    videoTitle: title,
+    videoDescription: description
     });
     $('#ytplayer').attr("src", `https://www.youtube.com/embed/${videoId}?autoplay=1&origin=http://example.com`);
     this.searchRelated();
