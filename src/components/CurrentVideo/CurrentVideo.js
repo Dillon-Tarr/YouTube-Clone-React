@@ -11,10 +11,10 @@ export default function CurrentVideo(props){
               frameBorder="0" > 
             </iframe>
           </div>
-          <div className="row">
+          <div className="row meta-data">
             <div className="col-8">
               <h2>{props.data.videoTitle}</h2>
-              <p id="description">{props.data.videoDescription}</p>
+              <p id="description">Description:<br/><br/>{props.data.videoDescription}</p>
             </div>
             <div className="col-2 d-flex justify-content-center">
                 <img src={require('../../images/thumbs.png')} alt="Thumbs Up" id="thumb-up" className="img-fluid thumb"/>
@@ -25,12 +25,12 @@ export default function CurrentVideo(props){
                 <p className="likes-dislikes">{props.data.numberOfDislikes}</p>
             </div>
           </div>
-          <div className="row">
+          <div className="row meta-data">
             <div className="col-8">
               <h4>number of comments</h4>
             </div>
           </div>
-          <div className="row">
+          <div className="row meta-data">
             <div className="col-8 d-flex">
               <input id="commentInput" placeholder="Commenting Publicly as Anonymous"></input>
             </div>
@@ -41,7 +41,7 @@ export default function CurrentVideo(props){
               <button className="commentButton" id="comment">Comment</button>
             </div>
           </div>
-          <div className="row">
+          <div className="row meta-data">
             <div className="col-12">
               <div id="commentsReplies">
                 <p>Comments and Replies</p>
