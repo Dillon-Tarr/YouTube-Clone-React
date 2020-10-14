@@ -13,8 +13,8 @@ export default function CurrentVideo(props){
           </div>
           <div className="row meta-data">
             <div className="col-8">
-              <h2>{props.data.videoTitle}</h2>
-              <p id="description">Description:<br/><br/>{props.data.videoDescription}</p>
+              <h2>{props.data.title}</h2>
+              <p id="description">Description:<br/><br/>{props.data.description}</p>
             </div>
             <div className="col-2 d-flex justify-content-center">
                 <img src={require('../../images/thumbs.png')} alt="Thumbs Up" id="thumb-up" className="img-fluid thumb"/>
@@ -27,7 +27,7 @@ export default function CurrentVideo(props){
           </div>
           <div className="row meta-data">
             <div className="col-8">
-              <h4>number of comments</h4>
+              <h4>{props.data.comments.length} Comments</h4>
             </div>
           </div>
           <div className="row meta-data">
