@@ -1,7 +1,6 @@
 import React from 'react'
 
 export default function CurrentVideo(props){
-    console.log(props.data.videoTitle);
 
     return (
     <>
