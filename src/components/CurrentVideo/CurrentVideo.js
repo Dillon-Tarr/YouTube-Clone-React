@@ -16,11 +16,15 @@ export default function CurrentVideo(props){
               <h2>{props.data.title}</h2>
             </div>
             <div className="col-md-2 col-6 d-flex justify-content-center">
+              <button id="up">
                 <img src={require('../../images/thumbs.png')} alt="Thumbs Up" id="thumb-up" className="img-fluid thumb"/>
+              </button>
                 <p className="likes-dislikes">{props.data.numberOfLikes}</p>
             </div>
             <div className="col-md-2 col-6 d-flex justify-content-center">
+              <button id="down">
                 <img src={require('../../images/thumbs.png')} alt="Thumbs Down" id="thumb-down" className="img-fluid thumb"/>
+              </button>
                 <p className="likes-dislikes">{props.data.numberOfDislikes}</p>
             </div>
           </div>
