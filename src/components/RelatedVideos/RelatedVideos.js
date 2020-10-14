@@ -9,7 +9,7 @@ export default function RelatedVideos(props){
         let title = videos[i].snippet.title;
         let description = videos[i].snippet.description; 
         let video = (
-            <div className="row related-video" id={videoId} key={videoId}>
+            <div className="row related-video  d-flex justify-content-center" id={videoId} key={videoId}>
                 <button onClick={() => {props.switchToRelatedVideo(videoId, title, description)}}><img className="thumbnail img-fluid" src={videos[i].snippet.thumbnails.high.url} alt="video thumbnail" /></button>
                 <button onClick={() => {props.switchToRelatedVideo(videoId, title, description)}}><p>{title}</p></button>
             </div>
