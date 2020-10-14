@@ -116,6 +116,7 @@ button {
   display: inline-block;
   font-size: 16px;
   cursor: pointer;
+  opacity: .5;
 }
 #comment{
   background-color: lightgray;
