@@ -18,9 +18,7 @@ export default class App extends Component {
       searchText: 'banana',
       videoId: 'xYmuum_wgvc',
       title: 'devCodeCamp Info Session',
-      description: `Learn to code!
-
-      For years, devCodeCamp has changed the lives of hundreds of students by training people with zero coding experience and giving them the skills to get a new job on a better career path in the tech industry. Our graduates get hired by the top companies in the state of Wisconsin and beyond, and these companies continue to come back and hire more.`,
+      description: `Learn to code!\n\nFor years, devCodeCamp has changed the lives of hundreds of students by training people with zero coding experience and giving them the skills to get a new job on a better career path in the tech industry. Our graduates get hired by the top companies in the state of Wisconsin and beyond, and these companies continue to come back and hire more.`,
       mongoVideoId: '5f8662ec1a72130f5c08bef6',
       numberOfLikes: 0,
       numberOfDislikes: 0,
@@ -35,7 +33,7 @@ export default class App extends Component {
     .then(res =>{
       axios.get(`http://localhost:5000/api/videos/`)
       .then(ourRes =>{
-        axios.get(`http://localhost:5000/api/videos/5f8662ec1a72130f5c08bef6`)
+        axios.get(`http://localhost:5000/api/videos/${this.state.mongoVideoId}`)
         .then(initialVideoRes =>{
           this.setState({
             relatedVideos: res.data,
@@ -67,6 +65,7 @@ export default class App extends Component {
         <div className="col-lg-9 col-sm-12">
           <CurrentVideo
           data={this.state}
+          addLikeOrDislike={this.addLikeOrDislike}
           />
         </div>
         <div className="col-lg-3 col-sm-12" id="related-videos">
@@ -131,16 +130,25 @@ export default class App extends Component {
     $('#ytplayer').attr("src", `https://www.youtube.com/embed/${videoId}?autoplay=1&origin=http://example.com`);
   }
 
-  increaseDecreaseLike(id){
+  addLikeOrDislike = (id) => {
+    let likes = this.state.numberOfLikes;
+    let dislikes = this.state.numberOfDislikes;
     if(id === 'up'){
-      this.state.numberOfLikes = (this.state.numberOfLikes + 1);
-    }else{
-      this.state.numberOfDislikes = (this.state.numberOfDislikes + 1);
+      likes++;
+    }else if(id === 'down'){
+      dislikes++;
     }
+    this.setState({
+      numberOfLikes: likes,
+      numberOfDislikes: dislikes
+    }, this.putLikesAndDislikes );
   }
 
-  changeNumberOfLikesDislikes = () => {
-    axios.put()
+  putLikesAndDislikes = () => {
+    axios.put(`http://localhost:5000/api/videos/${this.state.mongoVideoId}`,
+    {
+      "likes": this.state.numberOfLikes,
+      "dislikes": this.state.numberOfDislikes
+    })
   }
-
 }
