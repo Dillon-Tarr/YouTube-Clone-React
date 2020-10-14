@@ -12,7 +12,8 @@ export default class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      relatedVideos:{},
+      ourVideos: [],
+      relatedVideos: [],
       loading: true, 
       searchText: 'banana',
       videoId: 'xYmuum_wgvc',
@@ -30,13 +31,21 @@ export default class App extends Component {
   componentDidMount() {
     axios.get(`https://www.googleapis.com/youtube/v3/search?key=${apiKey}&relatedToVideoId=${this.state.videoId}&part=snippet&type=video`)
     .then(res =>{
+    axios.get(`http://localhost:5000/api/videos/`)
+    .then(ourRes =>{
       this.setState({
       relatedVideos: res.data,
-      loading: false
+      loading: false,
+      ourVideos: ourRes.data
     });
-      console.log(this.state.videoTitle);
-      console.log(this.state.relatedVideos.items[0].snippet.thumbnails.default.url);
-    }); 
+    })
+    .catch(function (error) {
+      console.log(`An error occured in the UrTube request:`, error);
+    })
+    })
+    .catch(function (error) {
+      console.log(`An error occured in the YouTube request:`, error);
+    })
   }
 
   render() {
