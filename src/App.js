@@ -12,7 +12,6 @@ export default class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      searchResults:{},
       relatedVideos:{},
       loading: true, 
       searchText: 'banana',
@@ -65,7 +64,6 @@ export default class App extends Component {
       let video = res.data.items[0];
       video.snippet.title = convertCommonHtmlEntities(video.snippet.title);
       this.setState({ 
-      searchResults: res.data,
       videoId: video.id.videoId,
       videoTitle: video.snippet.title
     });
@@ -74,8 +72,6 @@ export default class App extends Component {
             revisedTitle += res.data.items[0].snippet.title.split(';').pop();
             console.log(revisedTitle);
       }
-      console.log(this.state.videoTitle);
-      console.log(this.state.searchResults.items[0].id);
       $('#ytplayer').attr("src", `https://www.youtube.com/embed/${this.state.videoId}?autoplay=1&origin=http://example.com`);
       this.searchRelated();
     })
@@ -101,9 +97,6 @@ export default class App extends Component {
   }
 
   switchToRelatedVideo = (videoId, title) => {
-    // let revisedTitle = title.split('&').shift();
-    // revisedTitle += title.split(';').pop();
-    // console.log(revisedTitle);
     this.setState({
     videoId: videoId,
     videoTitle: title
