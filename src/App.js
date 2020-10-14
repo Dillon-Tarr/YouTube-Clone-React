@@ -33,20 +33,29 @@ export default class App extends Component {
   componentDidMount() {
     axios.get(`https://www.googleapis.com/youtube/v3/search?key=${apiKey}&relatedToVideoId=${this.state.videoId}&part=snippet&type=video`)
     .then(res =>{
-    axios.get(`http://localhost:5000/api/videos/`)
-    .then(ourRes =>{
-      this.setState({
-      relatedVideos: res.data,
-      loading: false,
-      ourVideos: ourRes.data
-    });
+      axios.get(`http://localhost:5000/api/videos/`)
+      .then(ourRes =>{
+        axios.get(`http://localhost:5000/api/videos/5f8662ec1a72130f5c08bef6`)
+        .then(initialVideoRes =>{
+          this.setState({
+            relatedVideos: res.data,
+            loading: false,
+            ourVideos: ourRes.data,
+            numberOfLikes: initialVideoRes.data.likes,
+            numberOfDislikes: initialVideoRes.data.dislikes,
+            comments: initialVideoRes.data.comments
+          });
+        })
+        .catch(function (error) {
+          console.log(`An error occurred in the UrTube request for the initial video:`, error);
+        })
+      })
+      .catch(function (error) {
+        console.log(`An error occurred in the UrTube request for all videos:`, error);
+      })
     })
     .catch(function (error) {
-      console.log(`An error occured in the UrTube request:`, error);
-    })
-    })
-    .catch(function (error) {
-      console.log(`An error occured in the YouTube request:`, error);
+      console.log(`An error occurred in the YouTube request:`, error);
     })
   }
 
