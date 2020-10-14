@@ -5,6 +5,7 @@ import $ from 'jquery'
 import apiKey from './default'
 import RelatedVideos from './components/RelatedVideos/RelatedVideos'
 import Header from './components/Header/Header'
+import convertCommonHtmlEntities from './convertCommonHtmlEntities'
 
 export default class App extends Component {
   constructor(props) {
@@ -85,6 +86,7 @@ export default class App extends Component {
           <RelatedVideos
           data={this.state.relatedVideos}
           switchToRelatedVideo={this.switchToRelatedVideo}
+          convertCommonHtmlEntities={this.convertCommonHtmlEntities}
           />
         </div>
       </div>
@@ -95,10 +97,12 @@ export default class App extends Component {
   searchYouTube = (searchText) => {
     axios.get(`https://www.googleapis.com/youtube/v3/search?q=${searchText}&key=${apiKey}&part=snippet&type=video`)
     .then(res => {
+      let video = res.data.items[0];
+      video.snippet.title = convertCommonHtmlEntities(video.snippet.title);
       this.setState({ 
       searchResults: res.data,
-      videoId: res.data.items[0].id.videoId,
-      videoTitle: res.data.items[0].snippet.title
+      videoId: video.id.videoId,
+      videoTitle: video.snippet.title
     });
       console.log(this.state.searchResults.items[0].id);
       $('#ytplayer').attr("src", `https://www.youtube.com/embed/${this.state.videoId}?autoplay=1&origin=http://example.com`);
@@ -115,8 +119,12 @@ export default class App extends Component {
     $( '#searchInput' ).attr("placeholder", `Search`);
     axios.get(`https://www.googleapis.com/youtube/v3/search?key=${apiKey}&relatedToVideoId=${this.state.videoId}&part=snippet&type=video`)
     .then(res => {
+      let relatedVideos = res.data;
+      for (let i = 0; i < relatedVideos.items.length; i++){
+        relatedVideos.items[i].snippet.title = convertCommonHtmlEntities(relatedVideos.items[i].snippet.title);
+      }
       this.setState({
-      relatedVideos: res.data
+      relatedVideos: relatedVideos
     });
     });  
   }
