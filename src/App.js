@@ -17,12 +17,14 @@ export default class App extends Component {
       loading: true, 
       searchText: 'banana',
       videoId: 'xYmuum_wgvc',
-      videoTitle: 'devCodeCamp Info Session',
-      videoDescription: `Learn to code!
+      title: 'devCodeCamp Info Session',
+      description: `Learn to code!
 
       For years, devCodeCamp has changed the lives of hundreds of students by training people with zero coding experience and giving them the skills to get a new job on a better career path in the tech industry. Our graduates get hired by the top companies in the state of Wisconsin and beyond, and these companies continue to come back and hire more.`,
+      mongoVideoId: '5f8662ec1a72130f5c08bef6',
       numberOfLikes: 0,
-      numberOfDislikes: 0
+      numberOfDislikes: 0,
+      comments: []
     }
 
     this.switchToRelatedVideo = this.switchToRelatedVideo.bind(this);
@@ -77,8 +79,8 @@ export default class App extends Component {
       video.snippet.title = convertCommonHtmlEntities(video.snippet.title);
       this.setState({ 
       videoId: video.id.videoId,
-      videoTitle: video.snippet.title,
-      videoDescription: video.snippet.description
+      title: video.snippet.title,
+      description: video.snippet.description
     });
       if(res.data.items[0].snippet.title.includes(';')){
             let revisedTitle = res.data.items[0].snippet.title.split('&').shift();
@@ -112,8 +114,8 @@ export default class App extends Component {
   switchToRelatedVideo = (videoId, title, description) => {
     this.setState({
     videoId: videoId,
-    videoTitle: title,
-    videoDescription: description
+    title: title,
+    description: description
     },
     this.searchRelated
     );
