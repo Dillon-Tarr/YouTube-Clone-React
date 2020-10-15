@@ -90,7 +90,9 @@ export default class App extends Component {
       videoId: video.id.videoId,
       title: video.snippet.title,
       description: video.snippet.description
-    });
+      }, () => {
+      this.checkForExistingVideo();
+      });
       $('#ytplayer').attr("src", `https://www.youtube.com/embed/${this.state.videoId}?autoplay=1&origin=http://example.com`);
       this.searchRelated();
     })
@@ -119,14 +121,15 @@ export default class App extends Component {
     this.setState({
     videoId: videoId,
     title: title,
-    description: description
-    },
-    this.searchRelated
-    );
+    description: description,
+    }, () => {
+      this.checkForExistingVideo();
+      this.searchRelated();
+    });
     $('#ytplayer').attr("src", `https://www.youtube.com/embed/${videoId}?autoplay=1&origin=http://example.com`);
   }
 
-  checkForExistingVideo = (videoId) => {
+  checkForExistingVideo = () => {
     axios.get(`http://localhost:5000/api/videos/`)
     .then(res =>{
       this.setState({
@@ -137,8 +140,8 @@ export default class App extends Component {
       console.log(`An error occurred in the UrTube request for all videos:`, error);
     })
     .then(() => {
-      let array = this.state.ourVideos.filter((el) => el.videoId === videoId);
-      if (array === []){
+      let array = this.state.ourVideos.filter((el) => el.videoId === this.state.videoId);
+      if (array.length === 0){
         this.setState({
           videoExistsInMongo: false,
           mongoVideoId: '',
@@ -231,7 +234,11 @@ export default class App extends Component {
       "comments": this.state.comments
     })
     .then((res) => {
-      console.log(`This video was added to the database. Here's the video's data:`, res.data)
+      console.log(`This video was added to the database. Here's the video's data:`, res.data);
+      this.setState({
+        videoExistsInMongo: true,
+        mongoVideoId: res.data._id
+      });
     })
     .catch(function (error) {
       console.log(`The following error occurred when trying to add this video to the database:`, error);
