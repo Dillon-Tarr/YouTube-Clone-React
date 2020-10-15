@@ -199,6 +199,7 @@ export default class App extends Component {
   }
 
   putNewComment = (commentText) => {
+    $( '#commentInput' ).val("");
     axios.put(`http://localhost:5000/api/videos/${this.state.mongoVideoId}`,
     {
       "text": commentText

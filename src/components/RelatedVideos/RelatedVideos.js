@@ -18,7 +18,7 @@ export default function RelatedVideos(props){
     }
     return (
     <>
-        <h2>Related Videos</h2>
+        <h2 className="text-center">Related Videos</h2>
         {relatedVideos}
     </>
     );

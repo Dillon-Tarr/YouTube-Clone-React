@@ -1,18 +1,33 @@
 import React, { Component } from 'react'
+import $ from 'jquery'
 
 export default class CurrentVideo extends Component {
   constructor(props){
     super(props);
     this.state = {
-      searchText: ''
+      commentText: ''
     }
-    this.handleSearchChange = this.handleSearchChange.bind(this);
+    this.handleCommentTextChange = this.handleCommentTextChange.bind(this);
   }
   
-  handleSearchChange(event) {
-    this.setState({searchText: event.target.value});
+  handleCommentTextChange(event) {
+    this.setState({commentText: event.target.value});
   }
   
+  renderComments(){
+    let comments = [];
+    for(let i = 0; i < this.props.data.comments.length; i++){
+      let commentText = this.props.data.comments[i].text;
+      let comment = (
+        <p>
+          {commentText}
+        </p>
+      );
+      comments.push(comment);
+    }
+    return comments;
+  }
+
   render() {
     return (
       <>
@@ -54,24 +69,28 @@ export default class CurrentVideo extends Component {
           <div className="col-8 d-flex">
             <input
             id="commentInput" type="text" placeholder="Commenting Publicly as Anonymous"
-            onChange={this.handleSearchChange}
+            onChange={this.handleCommentTextChange}
             onKeyPress={event => {
               if (event.key === 'Enter'){
-                //this.props.COMMENTFUNCTION(this.state.commentText)
+                this.props.updateVideo("comment", this.state.commentText);
               }
             }}/>
           </div>
           <div className="col-2 d-flex">
-            <button className="commentButton" id="cancel">Cancel</button>
+            <button className="commentButtons" id="cancel"
+            onClick={() => {$( '#commentInput' ).val("");}}
+            >Cancel</button>
           </div>
           <div className="col-2 d-flex">
-            <button className="commentButton" id="comment">Comment</button>
+            <button className="commentButtons" id="comment"
+            onClick={() => {this.props.updateVideo("comment", this.state.commentText);}}
+            >Comment</button>
           </div>
         </div>
         <div className="row meta-data">
           <div className="col-12">
-            <div id="commentsReplies">
-              <p>Comments and Replies</p>
+            <div id="commentsAndReplies">
+              <p>{this.renderComments()}</p>
             </div>
           </div>
         </div>
