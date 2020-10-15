@@ -5,7 +5,7 @@ import $ from 'jquery'
 import apiKey from './default'
 import RelatedVideos from './components/RelatedVideos/RelatedVideos'
 import Header from './components/Header/Header'
-import convertCommonHtmlEntities from './convertCommonHtmlEntities'
+import convertCommonHtmlEntities from './string-corrections'
 import CurrentVideo from './components/CurrentVideo/CurrentVideo'
 
 export default class App extends Component {
@@ -19,6 +19,7 @@ export default class App extends Component {
       videoId: 'xYmuum_wgvc',
       title: 'devCodeCamp Info Session',
       description: `Learn to code!\n\nFor years, devCodeCamp has changed the lives of hundreds of students by training people with zero coding experience and giving them the skills to get a new job on a better career path in the tech industry. Our graduates get hired by the top companies in the state of Wisconsin and beyond, and these companies continue to come back and hire more.`,
+      videoExistsInMongo: true,
       mongoVideoId: '5f8662ec1a72130f5c08bef6',
       numberOfLikes: 0,
       numberOfDislikes: 0,
@@ -65,7 +66,7 @@ export default class App extends Component {
         <div className="col-lg-9 col-sm-12">
           <CurrentVideo
           data={this.state}
-          addLikeOrDislike={this.addLikeOrDislike}
+          updateVideo={this.updateVideo}
           />
         </div>
         <div className="col-lg-3 col-sm-12" id="related-videos">
@@ -90,11 +91,6 @@ export default class App extends Component {
       title: video.snippet.title,
       description: video.snippet.description
     });
-      if(res.data.items[0].snippet.title.includes(';')){
-            let revisedTitle = res.data.items[0].snippet.title.split('&').shift();
-            revisedTitle += res.data.items[0].snippet.title.split(';').pop();
-            console.log(revisedTitle);
-      }
       $('#ytplayer').attr("src", `https://www.youtube.com/embed/${this.state.videoId}?autoplay=1&origin=http://example.com`);
       this.searchRelated();
     })
@@ -130,25 +126,116 @@ export default class App extends Component {
     $('#ytplayer').attr("src", `https://www.youtube.com/embed/${videoId}?autoplay=1&origin=http://example.com`);
   }
 
-  addLikeOrDislike = (id) => {
+  checkForExistingVideo = (videoId) => {
+    axios.get(`http://localhost:5000/api/videos/`)
+    .then(res =>{
+      this.setState({
+        ourVideos: res.data
+      });
+    })
+    .catch(function (error) {
+      console.log(`An error occurred in the UrTube request for all videos:`, error);
+    })
+    .then(() => {
+      let array = this.state.ourVideos.filter((el) => el.videoId === videoId);
+      if (array === []){
+        this.setState({
+          videoExistsInMongo: false,
+          mongoVideoId: '',
+          numberOfLikes: 0,
+          numberOfDislikes: 0,
+          comments: []
+        });
+      }
+      else{
+        this.setState({
+          videoExistsInMongo: true,
+          mongoVideoId: array[0]._id,
+          numberOfLikes: array[0].likes,
+          numberOfDislikes: array[0].dislikes,
+          comments: array[0].comments
+        });
+      }
+    });
+  }
+
+  updateVideo = (type, commentText = "") => {
     let likes = this.state.numberOfLikes;
     let dislikes = this.state.numberOfDislikes;
-    if(id === 'up'){
+    let comments = [];
+    if(type === 'up'){
       likes++;
-    }else if(id === 'down'){
+    }else if(type === 'down'){
       dislikes++;
+    }
+    else if(type === 'comment'){
+      if (commentText !== ""){
+        comments.push(commentText);
+      }
+      else{
+        return console.log(`You tried to add a comment without supplying the updateVideo function with commentText.`);
+      }
     }
     this.setState({
       numberOfLikes: likes,
-      numberOfDislikes: dislikes
-    }, this.putLikesAndDislikes );
+      numberOfDislikes: dislikes,
+      comments: comments
+    }, () => {
+      if (this.state.videoExistsInMongo){
+        if (commentText !== ""){
+          this.putNewComment(commentText);
+        }
+        else{
+          this.putLikesAndDislikes();
+        }
+      }
+      else{
+        this.postVideoToMongo();
+      }
+    });
   }
 
+  putNewComment = (commentText) => {
+    axios.put(`http://localhost:5000/api/videos/${this.state.mongoVideoId}`,
+    {
+      "text": commentText
+    })
+    .then((res) => {
+      console.log(`A comment was added to this video on the database. Here's the updated video data:`, res.data)
+    })
+    .catch(function (error) {
+      console.log(`The following error occurred when trying to add a comment to this video on the database:`, error);
+    })
+  }
+  
   putLikesAndDislikes = () => {
     axios.put(`http://localhost:5000/api/videos/${this.state.mongoVideoId}`,
     {
       "likes": this.state.numberOfLikes,
-      "dislikes": this.state.numberOfDislikes
+      "dislikes": this.state.numberOfDislikes,
+    })
+    .then((res) => {
+      console.log(`This video updated on the database. Here's the updated video data:`, res.data)
+    })
+    .catch(function (error) {
+      console.log(`The following error occurred when trying to update this video on the database:`, error);
     })
   }
+
+  postVideoToMongo = () => {
+    axios.post(`http://localhost:5000/api/videos/`,
+    {
+      "videoId": this.state.videoId,
+      "likes": this.state.numberOfLikes,
+      "dislikes": this.state.numberOfDislikes,
+      "comments": this.state.comments
+    })
+    .then((res) => {
+      console.log(`This video was added to the database. Here's the video's data:`, res.data)
+    })
+    .catch(function (error) {
+      console.log(`The following error occurred when trying to add this video to the database:`, error);
+    })
+  }
+
 }
