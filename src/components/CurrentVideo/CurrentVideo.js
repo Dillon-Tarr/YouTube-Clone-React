@@ -17,11 +17,43 @@ export default class CurrentVideo extends Component {
   renderComments(){
     let comments = [];
     for(let i = 0; i < this.props.data.comments.length; i++){
+      let commentId = this.props.data.comments[i]._id;
+
       let commentText = this.props.data.comments[i].text;
+      let openReplyButtonId = `open-reply-button#${commentId}`;
+      let replyDivId = `reply-P#${commentId}`;
+      let replyInputId = `reply-input#${commentId}`;
+      let cancelReplyButtonId = `cancel-reply-button#${commentId}`;
+      let submitReplyButtonId = `submit-reply-button#${commentId}`;
+
       let comment = (
-        <p>
-          {commentText}
-        </p>
+        <div key={commentId}>
+          <p>
+            {commentText}<br/>
+            <button className="commentButtons" id={openReplyButtonId}>Reply</button>
+          </p>
+          <div id={replyDivId} className="reply-div row">
+            <div className="col-8 d-flex">
+              <input id={replyInputId} type="text" placeholder="Add a public reply..."
+              //onKeyPress={event => {
+              //  if (event.key === 'Enter'){
+              //    this.props.ADDREPLY(replyText);
+              //  }
+              //}}
+              />
+            </div>
+            <div className="col-2 d-flex">
+              <button className="commentButtons" id={cancelReplyButtonId}
+              onClick={() => {$( `#${replyInputId}` ).val("");}}
+              >Cancel</button>
+            </div>
+            <div className="col-2 d-flex">
+              <button className="commentButtons" id={submitReplyButtonId}
+              //onClick={() => {this.props.ADDREPLY(replyText);}}
+              >Reply</button>
+            </div>
+          </div>
+        </div>
       );
       comments.push(comment);
     }
