@@ -20,7 +20,7 @@ export default class App extends Component {
       title: 'devCodeCamp Info Session',
       description: `Learn to code!\n\nFor years, devCodeCamp has changed the lives of hundreds of students by training people with zero coding experience and giving them the skills to get a new job on a better career path in the tech industry. Our graduates get hired by the top companies in the state of Wisconsin and beyond, and these companies continue to come back and hire more.`,
       videoExistsInMongo: true,
-      mongoVideoId: '5f8662ec1a72130f5c08bef6',
+      mongoVideoId: '5f88f8c923b3662a549b8a79',
       numberOfLikes: 0,
       numberOfDislikes: 0,
       comments: []
@@ -258,4 +258,20 @@ export default class App extends Component {
     })
   }
 
+  replyToComment = (commentId, replyText, replyInputId) => {
+    $( `#${replyInputId}` ).val("");
+    axios.put(`http://localhost:5000/api/videos/${this.state.mongoVideoId}/add_reply/${commentId}`,
+    {
+      "text": replyText
+    })
+    .then((res) => {
+      console.log(`A reply was added to this video on the database. Here's the updated video data:`, res.data)
+      this.setState({
+        comments: res.data.comments
+      })
+    })
+    .catch(function (error) {
+      console.log(`The following error occurred when trying to add a reply to this video on the database:`, error);
+    })
+  }
 }
