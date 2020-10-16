@@ -258,4 +258,20 @@ export default class App extends Component {
     })
   }
 
+  replyToComment = (commentId, replyText, replyInputId) => {
+    $( `#${replyInputId}` ).val("");
+    axios.put(`http://localhost:5000/api/videos/${this.state.mongoVideoId}/add_reply/${commentId}`,
+    {
+      "text": replyText
+    })
+    .then((res) => {
+      console.log(`A reply was added to this video on the database. Here's the updated video data:`, res.data)
+      this.setState({
+        comments: res.data.comments
+      })
+    })
+    .catch(function (error) {
+      console.log(`The following error occurred when trying to add a reply to this video on the database:`, error);
+    })
+  }
 }
