@@ -10,6 +10,7 @@ export default class CurrentVideo extends Component {
     }
     this.handleCommentTextChange = this.handleCommentTextChange.bind(this);
     this.handleReplyTextChange = this.handleReplyTextChange.bind(this);
+    this.clearReply = this.clearReply.bind(this);
   }
   
   handleCommentTextChange(event) {
@@ -18,6 +19,12 @@ export default class CurrentVideo extends Component {
   handleReplyTextChange(event) {
     this.setState({replyText: event.target.value});
   }
+  clearReply(commentId){
+    let replyDivId = `#reply-P${commentId}`;
+    let replyInputId = `#reply-input${commentId}`;
+    $( replyInputId ).val("");
+    //$( replyDivId ).css("display", "inherit");
+  }
   
   renderComments(){
     let comments = [];
@@ -25,10 +32,11 @@ export default class CurrentVideo extends Component {
       let commentId = this.props.data.comments[i]._id;
       let commentText = this.props.data.comments[i].text;
       let openReplyButtonId = `open-reply-button#${commentId}`;
-      let replyDivId = `reply-P#${commentId}`;
-      let replyInputId = `reply-input#${commentId}`;
+      let replyDivId = `reply-P${commentId}`;
+      let replyInputId = `reply-input${commentId}`;
       let cancelReplyButtonId = `cancel-reply-button#${commentId}`;
       let submitReplyButtonId = `submit-reply-button#${commentId}`;
+      let replyDivID = `#${replyDivId}`;
 
       let replies = [];
       for(let j = 0; j < this.props.data.comments[i].replies.length; j++){
@@ -45,11 +53,9 @@ export default class CurrentVideo extends Component {
         <div key={commentId}>
           <p>
             {commentText}<br/>
-            <button className="commentButtons" id={openReplyButtonId}
-              onClick={() => {
-                $(`#${replyDivId}`).css("display", "block");
-              }}
-            >Reply</button>
+            {/* <button className="commentButtons" id={openReplyButtonId}
+              onClick={() => {this.clearReply(replyDivId)}}
+            >Reply</button> */}
           </p>
           <div>
             {replies}
@@ -67,11 +73,10 @@ export default class CurrentVideo extends Component {
             </div>
             <div className="col-2 d-flex">
               <button className="commentButtons cancel" id={cancelReplyButtonId}
-              onClick={
-                () => {$( `#${replyInputId}` ).val("");
-                $(`#${replyDivId}`).css("display", "none")
-              }
-              }
+                onClick={() => 
+                  {this.clearReply(commentId);
+                  }
+                }
               >Cancel</button>
             </div>
             <div className="col-2 d-flex">
@@ -130,9 +135,9 @@ export default class CurrentVideo extends Component {
           </div>
         </div>
         <div className="row meta-data">
-          <div className="col-8 d-flex">
+          <div className="col-8 d-flex commentInputs">
             <input
-            id="commentInput" type="text" className="comment-reply-input" placeholder="Commenting Publicly as Anonymous"
+            id="commentInput" type="text" className="comment-reply-input" placeholder="Add a public comment..."
             onChange={this.handleCommentTextChange}
             onKeyPress={event => {
               if (event.key === 'Enter'){
