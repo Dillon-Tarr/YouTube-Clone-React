@@ -48,14 +48,14 @@ export default class CurrentVideo extends Component {
         <div key={commentId}>
           <p>
             {commentText}<br/>
-            <button className="commentButtons" id={openReplyButtonId}
+            {/* <button className="commentButtons" id={openReplyButtonId}
               onClick={() => {this.showDiv(replyDivId)}}
-            >Reply</button>
+            >Reply</button> */}
           </p>
           <div>
             {replies}
           </div>
-          <div id={replyDivId} className="reply-div row" style={{display: "none"}}>
+          <div id={replyDivId} className="reply-div row">
             <div className="col-8 d-flex">
               <input id={replyInputId} type="text" className="comment-reply-input" placeholder="Add a public reply..."
               onChange={this.handleReplyTextChange}
@@ -126,9 +126,9 @@ export default class CurrentVideo extends Component {
           </div>
         </div>
         <div className="row meta-data">
-          <div className="col-8 d-flex">
+          <div className="col-8 d-flex commentInputs">
             <input
-            id="commentInput" type="text" className="comment-reply-input" placeholder="Commenting Publicly as Anonymous"
+            id="commentInput" type="text" className="comment-reply-input" placeholder="Add a public comment..."
             onChange={this.handleCommentTextChange}
             onKeyPress={event => {
               if (event.key === 'Enter'){

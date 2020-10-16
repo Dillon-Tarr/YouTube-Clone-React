@@ -138,11 +138,22 @@ p {
   color: black;
   width: 75%;
   height: 35px;
+  font-size: 1.2rem;
+}
+.reply-div input::placeholder{
+  opacity: .75;
+  color: #000000;
+  font-style: italic;
+}
+.commentInputs input::placeholder{
+  opacity: .6;
+  color: white;
+  font-style: italic;
 }
 #commentInput{
   border-bottom: 1px solid lightgray;
   color: lightgray
 }
-/* .reply{
-  margin-left: .2rem;
-} */
+.reply{
+  font-size: 1.1rem;
+}
