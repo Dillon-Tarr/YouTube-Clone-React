@@ -20,7 +20,7 @@ export default class CurrentVideo extends Component {
     this.setState({replyText: event.target.value});
   }
   clearReply(commentId){
-    let replyDivId = `#reply-P${commentId}`;
+    //let replyDivId = `#reply-P${commentId}`;
     let replyInputId = `#reply-input${commentId}`;
     $( replyInputId ).val("");
     //$( replyDivId ).css("display", "inherit");
@@ -31,12 +31,12 @@ export default class CurrentVideo extends Component {
     for(let i = 0; i < this.props.data.comments.length; i++){
       let commentId = this.props.data.comments[i]._id;
       let commentText = this.props.data.comments[i].text;
-      let openReplyButtonId = `open-reply-button#${commentId}`;
+      //let openReplyButtonId = `open-reply-button#${commentId}`;
       let replyDivId = `reply-P${commentId}`;
       let replyInputId = `reply-input${commentId}`;
       let cancelReplyButtonId = `cancel-reply-button#${commentId}`;
       let submitReplyButtonId = `submit-reply-button#${commentId}`;
-      let replyDivID = `#${replyDivId}`;
+      //let replyDivID = `#${replyDivId}`;
 
       let replies = [];
       for(let j = 0; j < this.props.data.comments[i].replies.length; j++){
