@@ -10,6 +10,7 @@ export default class CurrentVideo extends Component {
     }
     this.handleCommentTextChange = this.handleCommentTextChange.bind(this);
     this.handleReplyTextChange = this.handleReplyTextChange.bind(this);
+    this.clearReply = this.clearReply.bind(this);
   }
   
   handleCommentTextChange(event) {
@@ -18,8 +19,11 @@ export default class CurrentVideo extends Component {
   handleReplyTextChange(event) {
     this.setState({replyText: event.target.value});
   }
-  showDiv(replyDivId){
-    $(`#${replyDivId}`).css("display", "block");
+  clearReply(commentId){
+    let replyDivId = `#reply-P${commentId}`;
+    let replyInputId = `#reply-input${commentId}`;
+    $( replyInputId ).val("");
+    //$( replyDivId ).css("display", "inherit");
   }
   
   renderComments(){
@@ -28,10 +32,11 @@ export default class CurrentVideo extends Component {
       let commentId = this.props.data.comments[i]._id;
       let commentText = this.props.data.comments[i].text;
       let openReplyButtonId = `open-reply-button#${commentId}`;
-      let replyDivId = `reply-P#${commentId}`;
-      let replyInputId = `reply-input#${commentId}`;
+      let replyDivId = `reply-P${commentId}`;
+      let replyInputId = `reply-input${commentId}`;
       let cancelReplyButtonId = `cancel-reply-button#${commentId}`;
       let submitReplyButtonId = `submit-reply-button#${commentId}`;
+      let replyDivID = `#${replyDivId}`;
 
       let replies = [];
       for(let j = 0; j < this.props.data.comments[i].replies.length; j++){
@@ -49,7 +54,7 @@ export default class CurrentVideo extends Component {
           <p>
             {commentText}<br/>
             {/* <button className="commentButtons" id={openReplyButtonId}
-              onClick={() => {this.showDiv(replyDivId)}}
+              onClick={() => {this.clearReply(replyDivId)}}
             >Reply</button> */}
           </p>
           <div>
@@ -68,11 +73,10 @@ export default class CurrentVideo extends Component {
             </div>
             <div className="col-2 d-flex">
               <button className="commentButtons cancel" id={cancelReplyButtonId}
-              onClick={
-                () => {$( `#${replyInputId}` ).val("");
-                $(`#${replyDivId}`).css("display", "none")
-              }
-              }
+                onClick={() => 
+                  {this.clearReply(commentId);
+                  }
+                }
               >Cancel</button>
             </div>
             <div className="col-2 d-flex">
