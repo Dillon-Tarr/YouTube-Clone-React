@@ -88,6 +88,11 @@ export default class CurrentVideo extends Component {
   }
 
   render() {
+    let sOrNoS = "s";
+    if (this.props.data.comments.length === 1){
+      sOrNoS = "";
+    }
+    
     return (
       <>
         <div  id="playerDiv">
@@ -121,7 +126,7 @@ export default class CurrentVideo extends Component {
         </div>
         <div className="row meta-data">
           <div className="col-8">
-            <h4>{this.props.data.comments.length} Comments</h4>
+            <h4>{this.props.data.comments.length} Comment{sOrNoS}</h4>
           </div>
         </div>
         <div className="row meta-data">

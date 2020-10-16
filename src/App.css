@@ -28,6 +28,9 @@ h2 {
 p {
   white-space: pre-wrap;
 }
+a{
+  display: contents;
+}
 
 .related-video {
   width: 90%;

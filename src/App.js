@@ -5,7 +5,7 @@ import $ from 'jquery'
 import apiKey from './default'
 import RelatedVideos from './components/RelatedVideos/RelatedVideos'
 import Header from './components/Header/Header'
-import convertCommonHtmlEntities from './string-corrections'
+import convertCommonHtmlEntities from './helpers/string-corrections'
 import CurrentVideo from './components/CurrentVideo/CurrentVideo'
 
 export default class App extends Component {
@@ -286,3 +286,8 @@ export default class App extends Component {
     })
   }
 }
+
+/*
+Known issues:
+  Changing the text in one reply box then submitting a reply in another comment submits the text from the wrong reply.
+*/
