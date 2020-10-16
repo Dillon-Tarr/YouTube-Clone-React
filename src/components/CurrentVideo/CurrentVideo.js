@@ -30,11 +30,15 @@ export default class CurrentVideo extends Component {
         <div key={commentId}>
           <p>
             {commentText}<br/>
-            <button className="commentButtons" id={openReplyButtonId}>Reply</button>
+            <button className="commentButtons" id={openReplyButtonId}
+              onClick={
+                $(`#${replyDivId}`).css("display", "block")
+              }
+            >Reply</button>
           </p>
           <div id={replyDivId} className="reply-div row">
             <div className="col-8 d-flex">
-              <input id={replyInputId} type="text" placeholder="Add a public reply..."
+              <input id={replyInputId} type="text" className="comment-reply-input" placeholder="Add a public reply..."
               //onKeyPress={event => {
               //  if (event.key === 'Enter'){
               //    this.props.ADDREPLY(replyText);
@@ -43,8 +47,12 @@ export default class CurrentVideo extends Component {
               />
             </div>
             <div className="col-2 d-flex">
-              <button className="commentButtons" id={cancelReplyButtonId}
-              onClick={() => {$( `#${replyInputId}` ).val("");}}
+              <button className="commentButtons cancel" id={cancelReplyButtonId}
+              onClick={
+                () => {$( `#${replyInputId}` ).val("");
+                $(`#${replyDivId}`).css("display", "none")
+              }
+              }
               >Cancel</button>
             </div>
             <div className="col-2 d-flex">
@@ -100,7 +108,7 @@ export default class CurrentVideo extends Component {
         <div className="row meta-data">
           <div className="col-8 d-flex">
             <input
-            id="commentInput" type="text" placeholder="Commenting Publicly as Anonymous"
+            id="commentInput" type="text" className="comment-reply-input" placeholder="Commenting Publicly as Anonymous"
             onChange={this.handleCommentTextChange}
             onKeyPress={event => {
               if (event.key === 'Enter'){
