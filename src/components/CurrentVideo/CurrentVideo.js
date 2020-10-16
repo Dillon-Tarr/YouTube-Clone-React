@@ -9,6 +9,7 @@ export default class CurrentVideo extends Component {
   constructor(props){
     super(props);
     this.state = {
+      initialLoad: true,
       commentText: "",
       replyText: ""
     }
@@ -31,13 +32,18 @@ export default class CurrentVideo extends Component {
   }
   showReply(commentId){
     let replyDivId = `#reply-P${commentId}`;
-    $( replyDivId ).show();
+    $( replyDivId ).toggle();
   }
   
   renderComments(){
-    $(document).ready(function(){
-      $(".reply-div ").hide();
-    });
+    if(this.state.initialLoad){
+      $(document).ready(function(){
+        $(".reply-div ").hide();
+      });
+      this.setState({
+        initialLoad: false
+      })
+    }
     let comments = [];
     for(let i = 0; i < this.props.data.comments.length; i++){
       let commentId = this.props.data.comments[i]._id;
@@ -85,14 +91,16 @@ export default class CurrentVideo extends Component {
             <div className="col-2 d-flex">
               <button className="commentButtons cancel" id={cancelReplyButtonId}
                 onClick={() => 
-                  {this.clearReply(commentId);
-                  }
+                  {this.clearReply(commentId);}
                 }
               >Cancel</button>
             </div>
             <div className="col-2 d-flex">
               <button className="commentButtons" id={submitReplyButtonId}
-              onClick={() => {this.props.putNewReply(commentId, this.state.replyText, replyInputId);}}
+              onClick={() => {
+                this.props.putNewReply(commentId, this.state.replyText, replyInputId);
+                {this.showReply(commentId)}
+              }}
               >Reply</button>
             </div>
           </div>
