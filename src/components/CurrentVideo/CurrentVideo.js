@@ -1,6 +1,10 @@
 import React, { Component } from 'react'
 import $ from 'jquery'
 
+$(document).ready(function(){
+  $(".reply-div ").hide();
+});
+
 export default class CurrentVideo extends Component {
   constructor(props){
     super(props);
@@ -20,23 +24,30 @@ export default class CurrentVideo extends Component {
     this.setState({replyText: event.target.value});
   }
   clearReply(commentId){
-    //let replyDivId = `#reply-P${commentId}`;
+    let replyDivId = `#reply-P${commentId}`;
     let replyInputId = `#reply-input${commentId}`;
     $( replyInputId ).val("");
-    //$( replyDivId ).css("display", "inherit");
+    $( replyDivId ).hide();
+  }
+  showReply(commentId){
+    let replyDivId = `#reply-P${commentId}`;
+    $( replyDivId ).show();
   }
   
   renderComments(){
+    $(document).ready(function(){
+      $(".reply-div ").hide();
+    });
     let comments = [];
     for(let i = 0; i < this.props.data.comments.length; i++){
       let commentId = this.props.data.comments[i]._id;
       let commentText = this.props.data.comments[i].text;
-      //let openReplyButtonId = `open-reply-button#${commentId}`;
+      let openReplyButtonId = `open-reply-button#${commentId}`;
       let replyDivId = `reply-P${commentId}`;
       let replyInputId = `reply-input${commentId}`;
       let cancelReplyButtonId = `cancel-reply-button#${commentId}`;
       let submitReplyButtonId = `submit-reply-button#${commentId}`;
-      //let replyDivID = `#${replyDivId}`;
+      let replyDivID = `#reply-P${commentId}`;
 
       let replies = [];
       for(let j = 0; j < this.props.data.comments[i].replies.length; j++){
@@ -53,9 +64,9 @@ export default class CurrentVideo extends Component {
         <div key={commentId}>
           <p>
             {commentText}<br/>
-            {/* <button className="commentButtons" id={openReplyButtonId}
-              onClick={() => {this.clearReply(replyDivId)}}
-            >Reply</button> */}
+            <button className="commentButtons" id={openReplyButtonId}
+              onClick={() => {this.showReply(commentId)}}
+            >Reply</button>
           </p>
           <div>
             {replies}
