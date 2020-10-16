@@ -23,13 +23,23 @@ export default class CurrentVideo extends Component {
     let comments = [];
     for(let i = 0; i < this.props.data.comments.length; i++){
       let commentId = this.props.data.comments[i]._id;
-
       let commentText = this.props.data.comments[i].text;
       let openReplyButtonId = `open-reply-button#${commentId}`;
       let replyDivId = `reply-P#${commentId}`;
       let replyInputId = `reply-input#${commentId}`;
       let cancelReplyButtonId = `cancel-reply-button#${commentId}`;
       let submitReplyButtonId = `submit-reply-button#${commentId}`;
+
+      let replies = [];
+      for(let j = 0; j < this.props.data.comments[i].replies.length; j++){
+        let replyKey = `reply-key#${i}-${j}`;
+        let reply = (
+          <p className="reply" key={replyKey}>
+            &#8627; {this.props.data.comments[i].replies[j].text}
+          </p>
+        )
+        replies.push(reply);
+      }
 
       let comment = (
         <div key={commentId}>
@@ -41,6 +51,9 @@ export default class CurrentVideo extends Component {
               }}
             >Reply</button>
           </p>
+          <div>
+            {replies}
+          </div>
           <div id={replyDivId} className="reply-div row">
             <div className="col-8 d-flex">
               <input id={replyInputId} type="text" className="comment-reply-input" placeholder="Add a public reply..."

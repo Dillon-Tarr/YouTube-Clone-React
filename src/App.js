@@ -164,6 +164,7 @@ export default class App extends Component {
   }
 
   updateVideo = (type, commentText = "") => {
+    console.log(commentText);
     let likes = this.state.numberOfLikes;
     let dislikes = this.state.numberOfDislikes;
 
@@ -233,10 +234,18 @@ export default class App extends Component {
   }
 
   postVideoToMongo = (likes, dislikes, commentText = "") => {
+    console.log(this.state.videoId);
+    console.log(likes);
+    console.log(dislikes);
+    console.log(commentText);
     let comments = [];
     if (commentText.length > 0){
-      comments.push(commentText);
-    }
+      let comment = {
+        text: commentText
+      };
+      comments.push(comment);
+    };
+    console.log(comments);
     axios.post(`http://localhost:5000/api/videos/`,
     {
       "videoId": this.state.videoId,
