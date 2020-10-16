@@ -5,7 +5,7 @@ export default class CurrentVideo extends Component {
   constructor(props){
     super(props);
     this.state = {
-      commentText: ''
+      commentText: ""
     }
     this.handleCommentTextChange = this.handleCommentTextChange.bind(this);
   }
@@ -105,6 +105,9 @@ export default class CurrentVideo extends Component {
             onKeyPress={event => {
               if (event.key === 'Enter'){
                 this.props.updateVideo("comment", this.state.commentText);
+                this.setState({
+                  commentText: ""
+                });
               }
             }}/>
           </div>
@@ -115,14 +118,18 @@ export default class CurrentVideo extends Component {
           </div>
           <div className="col-2 d-flex">
             <button className="commentButtons" id="comment"
-            onClick={() => {this.props.updateVideo("comment", this.state.commentText);}}
+            onClick={() => {this.props.updateVideo("comment", this.state.commentText);
+            this.setState({
+              commentText: ""
+            });
+            }}
             >Comment</button>
           </div>
         </div>
         <div className="row meta-data">
           <div className="col-12">
             <div id="commentsAndReplies">
-              <p>{this.renderComments()}</p>
+              {this.renderComments()}
             </div>
           </div>
         </div>

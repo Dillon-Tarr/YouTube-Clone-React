@@ -165,37 +165,35 @@ export default class App extends Component {
   updateVideo = (type, commentText = "") => {
     let likes = this.state.numberOfLikes;
     let dislikes = this.state.numberOfDislikes;
-    let comments = [];
-    if(type === 'up'){
-      likes++;
-    }else if(type === 'down'){
-      dislikes++;
+
+    if (type !== 'comment'){ //increase likes or dislikes first, regardless of whether video exists
+      if(type === 'up'){
+        likes++;
+      }else if(type === 'down'){
+        dislikes++;
+      }
+      else{
+        return console.log(`updateVideo ran with invalid type.`);
+      }
+
+      if (this.state.videoExistsInMongo){
+        this.putLikesAndDislikes(likes, dislikes);
+      }
+      else{
+        this.postVideoToMongo(likes, dislikes);
+      }
     }
     else if(type === 'comment'){
-      if (commentText !== ""){
-        comments.push(commentText);
-      }
-      else{
+      if (typeof commentText !== "string" || !(commentText.length > 0)){
         return console.log(`You tried to add a comment without supplying the updateVideo function with commentText.`);
       }
-    }
-    this.setState({
-      numberOfLikes: likes,
-      numberOfDislikes: dislikes,
-      comments: comments
-    }, () => {
-      if (this.state.videoExistsInMongo){
-        if (commentText !== ""){
-          this.putNewComment(commentText);
-        }
-        else{
-          this.putLikesAndDislikes();
-        }
+      else if (this.state.videoExistsInMongo){
+        this.putNewComment(commentText);
       }
       else{
-        this.postVideoToMongo();
+        this.postVideoToMongo(likes, dislikes, commentText);
       }
-    });
+    }
   }
 
   putNewComment = (commentText) => {
@@ -206,39 +204,53 @@ export default class App extends Component {
     })
     .then((res) => {
       console.log(`A comment was added to this video on the database. Here's the updated video data:`, res.data)
+      this.setState({
+        comments: res.data.comments
+      })
     })
     .catch(function (error) {
       console.log(`The following error occurred when trying to add a comment to this video on the database:`, error);
     })
   }
   
-  putLikesAndDislikes = () => {
+  putLikesAndDislikes = (likes, dislikes) => {
     axios.put(`http://localhost:5000/api/videos/${this.state.mongoVideoId}`,
     {
-      "likes": this.state.numberOfLikes,
-      "dislikes": this.state.numberOfDislikes,
+      "likes": likes,
+      "dislikes": dislikes
     })
     .then((res) => {
       console.log(`This video updated on the database. Here's the updated video data:`, res.data)
+      this.setState({
+        numberOfLikes: res.data.likes,
+        numberOfDislikes: res.data.dislikes
+      });
     })
     .catch(function (error) {
       console.log(`The following error occurred when trying to update this video on the database:`, error);
     })
   }
 
-  postVideoToMongo = () => {
+  postVideoToMongo = (likes, dislikes, commentText = "") => {
+    let comments = [];
+    if (commentText.length > 0){
+      comments.push(commentText);
+    }
     axios.post(`http://localhost:5000/api/videos/`,
     {
       "videoId": this.state.videoId,
-      "likes": this.state.numberOfLikes,
-      "dislikes": this.state.numberOfDislikes,
-      "comments": this.state.comments
+      "likes": likes,
+      "dislikes": dislikes,
+      "comments": comments
     })
     .then((res) => {
       console.log(`This video was added to the database. Here's the video's data:`, res.data);
       this.setState({
         videoExistsInMongo: true,
-        mongoVideoId: res.data._id
+        mongoVideoId: res.data._id,
+        likes: res.data.likes,
+        dislikes: res.data.dislikes,
+        comments: res.data.comments
       });
     })
     .catch(function (error) {
