@@ -18,6 +18,9 @@ export default class CurrentVideo extends Component {
   handleReplyTextChange(event) {
     this.setState({replyText: event.target.value});
   }
+  showDiv(replyDivId){
+    $(`#${replyDivId}`).css("display", "block");
+  }
   
   renderComments(){
     let comments = [];
@@ -46,15 +49,13 @@ export default class CurrentVideo extends Component {
           <p>
             {commentText}<br/>
             <button className="commentButtons" id={openReplyButtonId}
-              onClick={() => {
-                $(`#${replyDivId}`).css("display", "block");
-              }}
+              onClick={() => {this.showDiv(replyDivId)}}
             >Reply</button>
           </p>
           <div>
             {replies}
           </div>
-          <div id={replyDivId} className="reply-div row">
+          <div id={replyDivId} className="reply-div row" style={{display: "none"}}>
             <div className="col-8 d-flex">
               <input id={replyInputId} type="text" className="comment-reply-input" placeholder="Add a public reply..."
               onChange={this.handleReplyTextChange}
