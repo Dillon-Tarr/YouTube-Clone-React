@@ -5,13 +5,18 @@ export default class CurrentVideo extends Component {
   constructor(props){
     super(props);
     this.state = {
-      commentText: ""
+      commentText: "",
+      replyText: ""
     }
     this.handleCommentTextChange = this.handleCommentTextChange.bind(this);
+    this.handleReplyTextChange = this.handleReplyTextChange.bind(this);
   }
   
   handleCommentTextChange(event) {
     this.setState({commentText: event.target.value});
+  }
+  handleReplyTextChange(event) {
+    this.setState({replyText: event.target.value});
   }
   
   renderComments(){
@@ -31,19 +36,20 @@ export default class CurrentVideo extends Component {
           <p>
             {commentText}<br/>
             <button className="commentButtons" id={openReplyButtonId}
-              onClick={
-                $(`#${replyDivId}`).css("display", "block")
-              }
+              onClick={() => {
+                $(`#${replyDivId}`).css("display", "block");
+              }}
             >Reply</button>
           </p>
           <div id={replyDivId} className="reply-div row">
             <div className="col-8 d-flex">
               <input id={replyInputId} type="text" className="comment-reply-input" placeholder="Add a public reply..."
-              //onKeyPress={event => {
-              //  if (event.key === 'Enter'){
-              //    this.props.ADDREPLY(replyText);
-              //  }
-              //}}
+              onChange={this.handleReplyTextChange}
+              onKeyPress={event => {
+                if (event.key === 'Enter'){
+                  this.props.putNewReply(commentId, this.state.replyText, replyInputId);
+                }
+              }}
               />
             </div>
             <div className="col-2 d-flex">
@@ -57,7 +63,7 @@ export default class CurrentVideo extends Component {
             </div>
             <div className="col-2 d-flex">
               <button className="commentButtons" id={submitReplyButtonId}
-              //onClick={() => {this.props.ADDREPLY(replyText);}}
+              onClick={() => {this.props.putNewReply(commentId, this.state.replyText, replyInputId);}}
               >Reply</button>
             </div>
           </div>

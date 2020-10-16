@@ -67,6 +67,7 @@ export default class App extends Component {
           <CurrentVideo
           data={this.state}
           updateVideo={this.updateVideo}
+          putNewReply={this.putNewReply}
           />
         </div>
         <div className="col-lg-3 col-sm-12" id="related-videos">
@@ -258,7 +259,8 @@ export default class App extends Component {
     })
   }
 
-  replyToComment = (commentId, replyText, replyInputId) => {
+  putNewReply = (commentId, replyText, replyInputId) => {
+    console.log(replyText);
     $( `#${replyInputId}` ).val("");
     axios.put(`http://localhost:5000/api/videos/${this.state.mongoVideoId}/add_reply/${commentId}`,
     {
