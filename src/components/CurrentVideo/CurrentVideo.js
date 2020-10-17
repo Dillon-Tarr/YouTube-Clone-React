@@ -1,10 +1,6 @@
 import React, { Component } from 'react'
 import $ from 'jquery'
 
-$(document).ready(function(){
-  $(".reply-div ").hide();
-});
-
 export default class CurrentVideo extends Component {
   constructor(props){
     super(props);
@@ -55,7 +51,6 @@ export default class CurrentVideo extends Component {
       let replyInputId = `reply-input${commentId}`;
       let cancelReplyButtonId = `cancel-reply-button#${commentId}`;
       let submitReplyButtonId = `submit-reply-button#${commentId}`;
-      let replyDivID = `#reply-P${commentId}`;
 
       let replies = [];
       for(let j = 0; j < this.props.data.comments[i].replies.length; j++){
@@ -102,8 +97,7 @@ export default class CurrentVideo extends Component {
               onClick={() => {
                 this.props.putNewReply(commentId, this.state.replyText, replyInputId);
                 {this.showReply(commentId)}
-              }}
-              >Reply</button>
+              }}>Reply</button>
             </div>
           </div>
         </div>
