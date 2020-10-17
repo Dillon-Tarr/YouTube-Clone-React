@@ -25,8 +25,12 @@ button {
 h2 {
   font-size: 3rem;
 }
-p {
+.formatted-description {
   white-space: pre-wrap;
+}
+.description-div{
+  height: 15rem;
+  overflow-y: hidden;
 }
 a{
   display: contents;

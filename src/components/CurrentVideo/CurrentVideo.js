@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import $ from 'jquery'
 
+var divAuto = false;
+
 export default class CurrentVideo extends Component {
   constructor(props){
     super(props);
@@ -31,6 +33,18 @@ export default class CurrentVideo extends Component {
     let replyInputId = `#reply-input${commentId}`;
     $( replyInputId ).val("");
     $( replyDivId ).toggle();
+  }
+  toggleDivHeight(){
+    if(divAuto){
+      $( ".description-div" ).css("height", "15rem");
+      $( "#moreLess" ).html("MORE...");
+      divAuto = false;
+    }else{
+      $( ".description-div" ).css("height", "auto");
+      $( "#moreLess" ).html("LESS...");
+      divAuto = true;
+    }
+
   }
   
   renderComments(){
@@ -141,8 +155,13 @@ export default class CurrentVideo extends Component {
         </div>
         <div className="row meta-data">
           <div className="col-12">
-            <p id="description">Description:<br/><br/>{this.props.data.description}</p>
+            <p id="description">Description:</p>
+            <br/>
+            <div className="description-div"><p className="formatted-description">{this.props.data.description}</p></div>
           </div>
+          <button type="button" className="commentButtons" id="moreLess"
+            onClick={() => (this.toggleDivHeight())}
+            >MORE...</button>
         </div>
         <div className="row meta-data">
           <div className="col-8">
@@ -179,10 +198,8 @@ export default class CurrentVideo extends Component {
           </div>
         </div>
         <div className="row meta-data">
-          <div className="col-12">
-            <div id="commentsAndReplies">
+          <div className="col-12" id="commentsAndReplies">
               {this.renderComments()}
-            </div>
           </div>
         </div>
       </>
