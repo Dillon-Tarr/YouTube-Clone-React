@@ -36,7 +36,7 @@ export default class CurrentVideo extends Component {
   }
   toggleDivHeight(){
     if(divAuto){
-      $( ".description-div" ).css("height", "15rem");
+      $( ".description-div" ).css("height", "11rem");
       $( "#moreLess" ).html("MORE...");
       divAuto = false;
     }else{
@@ -198,8 +198,10 @@ export default class CurrentVideo extends Component {
           </div>
         </div>
         <div className="row meta-data">
-          <div className="col-12" id="commentsAndReplies">
+          <div className="col-12">
+            <div id="commentsAndReplies">
               {this.renderComments()}
+            </div>
           </div>
         </div>
       </>

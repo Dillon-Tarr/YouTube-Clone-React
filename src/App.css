@@ -29,7 +29,7 @@ h2 {
   white-space: pre-wrap;
 }
 .description-div{
-  height: 15rem;
+  height: 11rem;
   overflow-y: hidden;
 }
 a{
@@ -138,6 +138,10 @@ a{
   background-color: lightgray;
   color: rgb(14, 12, 36);
 }
+.moreLess{
+  background-color: lightgray;
+  color: rgb(14, 12, 36);
+}
 .comment-reply-input{
   background: transparent;
   border: none;
@@ -164,8 +168,3 @@ a{
 .reply{
   font-size: 1.1rem;
 }
-/* .collapsing{
-  overflow: hidden;
-  text-overflow: ellipsis;
-  height: 400px;
-} */
