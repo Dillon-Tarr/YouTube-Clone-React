@@ -32,6 +32,8 @@ export default class CurrentVideo extends Component {
   }
   showReply(commentId){
     let replyDivId = `#reply-P${commentId}`;
+    let replyInputId = `#reply-input${commentId}`;
+    $( replyInputId ).val("");
     $( replyDivId ).toggle();
   }
   
@@ -70,9 +72,9 @@ export default class CurrentVideo extends Component {
         <div key={commentId}>
           <p>
             {commentText}<br/>
-            <button className="commentButtons" id={openReplyButtonId}
+            <button className="commentButtons cancel" id={openReplyButtonId}
               onClick={() => {this.showReply(commentId)}}
-            >Reply</button>
+            >REPLY</button>
           </p>
           <div>
             {replies}
