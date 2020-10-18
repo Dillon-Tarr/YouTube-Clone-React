@@ -286,8 +286,3 @@ export default class App extends Component {
     })
   }
 }
-
-/*
-Known issues:
-  Changing the text in one reply box then submitting a reply in another comment submits the text from the wrong reply.
-*/

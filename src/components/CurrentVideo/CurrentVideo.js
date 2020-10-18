@@ -9,7 +9,7 @@ export default class CurrentVideo extends Component {
     this.state = {
       initialLoad: true,
       commentText: "",
-      replyText: ""
+      replyTrackers: []
     }
     this.handleCommentTextChange = this.handleCommentTextChange.bind(this);
     this.handleReplyTextChange = this.handleReplyTextChange.bind(this);
@@ -19,9 +19,32 @@ export default class CurrentVideo extends Component {
   handleCommentTextChange(event) {
     this.setState({commentText: event.target.value});
   }
-  handleReplyTextChange(event) {
-    this.setState({replyText: event.target.value});
+
+  handleReplyTextChange = replyInputId => evt => {
+    const updatedReplyTrackers = this.state.replyTrackers.map((replyTracker) => {
+      if (replyInputId !== replyTracker.replyInputId) return replyTracker;
+      return { ...replyTracker, replyText: evt.target.value };
+    });
+
+    this.setState({ replyTrackers: updatedReplyTrackers });
+  };
+
+  setReplyTrackers = () => {
+    let replyTrackers = [];
+    for (let i = 0; i < this.props.data.comments.length; i++){
+      let commentId = this.props.data.comments[i]._id;
+      let replyInputId = `reply-input${commentId}`;
+      replyTrackers.push({
+        replyInputId: replyInputId,
+        replyText: ""
+      });
+    }
+    console.log("setReplyTrackers ran. Here are the replyTrackers:", replyTrackers);
+    this.setState({
+      replyTrackers: replyTrackers
+    });
   }
+
   clearReply(commentId){
     let replyDivId = `#reply-P${commentId}`;
     let replyInputId = `#reply-input${commentId}`;
@@ -44,81 +67,24 @@ export default class CurrentVideo extends Component {
       $( "#moreLess" ).html("LESS...");
       divAuto = true;
     }
-
   }
-  
-  renderComments(){
+
+  componentDidMount(){
     if(this.state.initialLoad){
       $(document).ready(function(){
         $(".reply-div ").hide();
       });
       this.setState({
         initialLoad: false
-      })
+      });
     }
-    let comments = [];
-    for(let i = 0; i < this.props.data.comments.length; i++){
-      let commentId = this.props.data.comments[i]._id;
-      let commentText = this.props.data.comments[i].text;
-      let openReplyButtonId = `open-reply-button#${commentId}`;
-      let replyDivId = `reply-P${commentId}`;
-      let replyInputId = `reply-input${commentId}`;
-      let cancelReplyButtonId = `cancel-reply-button#${commentId}`;
-      let submitReplyButtonId = `submit-reply-button#${commentId}`;
+    this.setReplyTrackers();
+  }
 
-      let replies = [];
-      for(let j = 0; j < this.props.data.comments[i].replies.length; j++){
-        let replyKey = `reply-key#${i}-${j}`;
-        let reply = (
-          <p className="reply" key={replyKey}>
-            &#8627; {this.props.data.comments[i].replies[j].text}
-          </p>
-        )
-        replies.push(reply);
-      }
-
-      let comment = (
-        <div key={commentId}>
-          <p>
-            {commentText}<br/>
-            <button className="commentButtons cancel" id={openReplyButtonId}
-              onClick={() => {this.showReply(commentId)}}
-            >REPLY</button>
-          </p>
-          <div>
-            {replies}
-          </div>
-          <div id={replyDivId} className="reply-div row">
-            <div className="col-8 d-flex">
-              <input id={replyInputId} type="text" className="comment-reply-input" placeholder="Add a public reply..."
-              onChange={this.handleReplyTextChange}
-              onKeyPress={event => {
-                if (event.key === 'Enter'){
-                  this.props.putNewReply(commentId, this.state.replyText, replyInputId);
-                }
-              }}
-              />
-            </div>
-            <div className="col-2 d-flex">
-              <button className="commentButtons cancel" id={cancelReplyButtonId}
-                onClick={() => 
-                  {this.clearReply(commentId);}
-                }
-              >Cancel</button>
-            </div>
-            <div className="col-2 d-flex">
-              <button className="commentButtons" id={submitReplyButtonId}
-              onClick={() => {
-                this.props.putNewReply(commentId, this.state.replyText, replyInputId);
-                {this.showReply(commentId)}
-              }}>Reply</button>
-            </div>
-          </div>
-        </div>
-      );
-      comments.push(comment);
+  componentDidUpdate(){
+    if (this.props.data.comments.length !== this.state.replyTrackers.length){
+      this.setReplyTrackers();
     }
-    return comments;
   }
 
   render() {
@@ -207,4 +173,72 @@ export default class CurrentVideo extends Component {
       </>
     );
   }
+
+  renderComments(){
+    let comments = [];
+    for(let i = 0; i < this.props.data.comments.length; i++){
+      let commentId = this.props.data.comments[i]._id;
+      let commentText = this.props.data.comments[i].text;
+      let openReplyButtonId = `open-reply-button#${commentId}`;
+      let replyDivId = `reply-P${commentId}`;
+      let replyInputId = `reply-input${commentId}`;
+      let cancelReplyButtonId = `cancel-reply-button#${commentId}`;
+      let submitReplyButtonId = `submit-reply-button#${commentId}`;
+
+      let replies = [];
+      for(let j = 0; j < this.props.data.comments[i].replies.length; j++){
+        let replyKey = `reply-key#${i}-${j}`;
+        let reply = (
+          <p className="reply" key={replyKey}>
+            &#8627; {this.props.data.comments[i].replies[j].text}
+          </p>
+        )
+        replies.push(reply);
+      }
+
+      let comment = (
+        <div key={commentId}>
+          <p>
+            {commentText}<br/>
+            <button className="commentButtons cancel" id={openReplyButtonId}
+              onClick={() => {this.showReply(commentId)}}
+            >REPLY</button>
+          </p>
+          <div>
+            {replies}
+          </div>
+          <div id={replyDivId} className="reply-div row">
+            <div className="col-8 d-flex">
+              <input id={replyInputId} type="text" className="comment-reply-input" placeholder="Add a public reply..."
+              onChange={this.handleReplyTextChange(replyInputId)}
+              onKeyPress={event => {
+                if (event.key === 'Enter'){
+                  this.props.putNewReply(commentId, this.state.replyTrackers[i].replyText, replyInputId);
+                }
+              }}
+              />
+            </div>
+            <div className="col-2 d-flex">
+              <button className="commentButtons cancel" id={cancelReplyButtonId}
+                onClick={() => 
+                  {this.clearReply(commentId);}
+                }
+              >Cancel</button>
+            </div>
+            <div className="col-2 d-flex">
+              <button className="commentButtons" id={submitReplyButtonId}
+              onClick={() => {
+                this.props.putNewReply(commentId, this.state.replyTrackers[i].replyText, replyInputId);
+                this.showReply(commentId)
+              }}>Reply</button>
+            </div>
+          </div>
+        </div>
+      );
+      comments.push(comment);
+    }
+
+    return comments;
+  }
+
 }
