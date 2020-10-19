@@ -46,12 +46,14 @@ export default class CurrentVideo extends Component {
   }
 
   clearReply(commentId){
+    this.props.hideReplyDiv();
     let replyDivId = `#reply-P${commentId}`;
     let replyInputId = `#reply-input${commentId}`;
     $( replyInputId ).val("");
     $( replyDivId ).hide();
   }
   showReply(commentId){
+    this.props.showReplyDiv();
     let replyDivId = `#reply-P${commentId}`;
     let replyInputId = `#reply-input${commentId}`;
     $( replyInputId ).val("");
@@ -69,7 +71,7 @@ export default class CurrentVideo extends Component {
     }
   }
 
-  componentDidMount(){
+  componentDidMount(){     
     if(this.state.initialLoad){
       $(document).ready(function(){
         $(".reply-div ").hide();
@@ -84,6 +86,9 @@ export default class CurrentVideo extends Component {
   componentDidUpdate(){
     if (this.props.data.comments.length !== this.state.replyTrackers.length){
       this.setReplyTrackers();
+    }
+    if(this.props.data.replyHidden){
+      $('[id^=reply-P]').hide();
     }
   }
 
@@ -145,6 +150,7 @@ export default class CurrentVideo extends Component {
                 this.setState({
                   commentText: ""
                 });
+                $( '#commentInput' ).val("");
               }
             }}/>
           </div>
@@ -159,6 +165,7 @@ export default class CurrentVideo extends Component {
             this.setState({
               commentText: ""
             });
+            $( '#commentInput' ).val("");
             }}
             >Comment</button>
           </div>

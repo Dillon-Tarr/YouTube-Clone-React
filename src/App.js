@@ -23,10 +23,13 @@ export default class App extends Component {
       mongoVideoId: '5f88f8c923b3662a549b8a79',
       numberOfLikes: 0,
       numberOfDislikes: 0,
-      comments: []
+      comments: [],
+      replyHidden: true
     }
 
     this.switchToRelatedVideo = this.switchToRelatedVideo.bind(this);
+    this.showReplyDiv = this.showReplyDiv.bind(this);
+    this.hideReplyDiv = this.hideReplyDiv.bind(this)
   }
   
   componentDidMount() {
@@ -68,6 +71,8 @@ export default class App extends Component {
           data={this.state}
           updateVideo={this.updateVideo}
           putNewReply={this.putNewReply}
+          hideReplyDiv={this.hideReplyDiv}
+          showReplyDiv={this.showReplyDiv}
           />
         </div>
         <div className="col-lg-3 col-sm-12" id="related-videos">
@@ -123,6 +128,7 @@ export default class App extends Component {
     videoId: videoId,
     title: title,
     description: description,
+    replyHidden: true
     }, () => {
       this.checkForExistingVideo();
       this.searchRelated();
@@ -284,5 +290,16 @@ export default class App extends Component {
     .catch(function (error) {
       console.log(`The following error occurred when trying to add a reply to this video on the database:`, error);
     })
+  }
+
+  hideReplyDiv(){
+    this.setState({
+      replyHidden: true
+    });
+  }
+  showReplyDiv(){
+    this.setState({
+      replyHidden: false
+    });
   }
 }
